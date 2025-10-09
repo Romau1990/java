@@ -6,8 +6,8 @@ public class Juego {
 
         Scanner game = new Scanner(System.in);
 
-        
-        var choice = JOptionPane.showConfirmDialog(null,"Bienvenido superviviente, listo para comenzar tu aventura? presiona CONTINUAR si lo estas o CANCELAR si quieres abanonar");
+        var choice = JOptionPane.showConfirmDialog(null,
+                "Bienvenido superviviente, listo para comenzar tu aventura? presiona CONTINUAR si lo estas o CANCELAR si quieres abanonar");
 
         if (choice == 1) {
             JOptionPane.showMessageDialog(null, "has abandonado la partida");
@@ -32,10 +32,9 @@ public class Juego {
 
 class Jugador {
     static String nombre;
-    static ArrayList<ListadoItems> mochila = new ArrayList<>();
+    static ArrayList<ObjItem> mochila = new ArrayList<>();
 
-
-    //Métodos del personaje
+    // Métodos del personaje
 
     static public void nombre(String playerName) {
         Jugador.nombre = playerName;
@@ -62,17 +61,18 @@ class ListadoItems {
     static public Arma darArma() {
         var indexArma = (int) (Math.random() * ListadoItems.listaArmas.size());
         System.out.println(ListadoItems.listaArmas.get(indexArma).nombre);
+        Jugador.mochila.add(ListadoItems.listaArmas.get(indexArma));
         return ListadoItems.listaArmas.get(indexArma);
     }
 
     // entrega un item inicial al jugador
     static public Item darItem() {
         var indexItem = (int) (Math.random() * ListadoItems.listaArmas.size());
-        var cantidadItem = (int) ((Math.random() +1) * 5);
-        System.out.println(ListadoItems.listaArmas.get(indexItem).nombre + " x" + cantidadItem);
+        var cantidadItem = (int) ((Math.random() + 1) * 5);
+        System.out.println(ListadoItems.listaItems.get(indexItem).nombre + " x" + cantidadItem);
+        Jugador.mochila.add(ListadoItems.listaItems.get(indexItem));
         return ListadoItems.listaItems.get(indexItem);
     }
-
 
     static {
         // === ARMAS ===
@@ -88,64 +88,60 @@ class ListadoItems {
         añadirArma(new Arma("Destornillador", 2, 5, 1, 80, "Destornillador común, útil y mortal.", "perforante"));
 
         // === ITEMS ===
-        añadirItem(new Item("Vendaje", 0, 0, 1, 1, "Sirve para detener hemorragias leves.", "ninguno"));
-        añadirItem(new Item("Carne cruda", 0, 0, 2, 1, "Carne sin cocinar, puede enfermarte.", "ninguno"));
-        añadirItem(new Item("Botella de agua", 0, 0, 1, 1, "Agua limpia para hidratarte.", "ninguno"));
-        añadirItem(new Item("Chatarra", 0, 0, 3, 1, "Restos metálicos, útiles para reparar cosas.", "ninguno"));
-        añadirItem(new Item("Electronicos", 0, 0, 2, 1, "Piezas electrónicas para fabricar o reparar.", "ninguno"));
-        añadirItem(new Item("Fosforos", 0, 0, 1, 1, "Caja con fósforos secos.", "ninguno"));
-        añadirItem(new Item("Linterna", 0, 0, 2, 80, "Linterna de mano para iluminar.", "ninguno"));
-        añadirItem(new Item("Sobre de dormir", 0, 0, 3, 200, "Permite descansar y recuperar energía.", "ninguno"));
-        añadirItem(new Item("Fuegos artificiales", 0, 0, 2, 1, "Sirven para distraer enemigos o iluminar.", "ninguno"));
-        añadirItem(new Item("Antibioticos", 0, 0, 1, 1, "Curan infecciones o enfermedades leves.", "ninguno"));
-        añadirItem(new Item("Garzúa", 0, 0, 1, 100, "Herramienta para forzar cerraduras.", "ninguno"));
-        añadirItem(new Item("madera", 0, 0, 2, 0, "Sirve para reparar y construir", "ninguno"));
+        añadirItem(new Item("Vendaje", 1, 1, "Sirve para detener hemorragias leves."));
+        añadirItem(new Item("Carne cruda", 2, 1, "Carne sin cocinar, puede enfermarte."));
+        añadirItem(new Item("Botella de agua", 1, 1, "Agua limpia para hidratarte."));
+        añadirItem(new Item("Chatarra", 3, 1, "Restos metálicos, útiles para reparar cosas."));
+        añadirItem(new Item("Electronicos", 2, 1, "Piezas electrónicas para fabricar o reparar."));
+        añadirItem(new Item("Fosforos", 1, 1, "Caja con fósforos secos."));
+        añadirItem(new Item("Linterna", 2, 80, "Linterna de mano para iluminar."));
+        añadirItem(new Item("Sobre de dormir", 3, 200, "Permite descansar y recuperar energía."));
+        añadirItem(new Item("Fuegos artificiales", 2, 1, "Sirven para distraer enemigos o iluminar."));
+        añadirItem(new Item("Antibioticos", 1, 1, "Curan infecciones o enfermedades leves."));
+        añadirItem(new Item("Garzúa", 1, 100, "Herramienta para forzar cerraduras."));
+        añadirItem(new Item("madera", 2, 0, "Sirve para reparar y construir"));
+
     }
 
 }
 
 // plantilla de items
-class Item {
+
+// Clase padre solo con atributos comunes
+abstract class ObjItem {
     String nombre;
-    int dañoMin;
-    int dañoMax;
     int peso;
     int durabilidad;
     String descripcion;
-    String tipoDaño;
-    int cantidad; 
+    int cantidad;
 
-    public Item(String nombre, int dañoMin, int dañoMax, int peso, int durabilidad, String descripcion,String tipoDaño) {
+    public ObjItem(String nombre, int peso, int durabilidad, String descripcion) {
         this.nombre = nombre;
-        this.dañoMin = dañoMin;
-        this.dañoMax = dañoMax;
         this.peso = peso;
         this.durabilidad = durabilidad;
         this.descripcion = descripcion;
-        this.tipoDaño = tipoDaño;
-        this.cantidad = 0; 
+        this.cantidad = 0;
     }
 }
 
-class Arma {
-    String nombre;
+// Clase Item sin atributos de daño
+class Item extends ObjItem {
+    public Item(String nombre, int peso, int durabilidad, String descripcion) {
+        super(nombre, peso, durabilidad, descripcion);
+    }
+}
+
+// Clase Arma con atributos de daño
+class Arma extends ObjItem {
     int dañoMin;
     int dañoMax;
-    int peso;
-    int durabilidad;
-    String descripcion;
     String tipoDaño;
-    int cantidad;
 
     public Arma(String nombre, int dañoMin, int dañoMax, int peso, int durabilidad, String descripcion,
             String tipoDaño) {
-        this.nombre = nombre;
+        super(nombre, peso, durabilidad, descripcion);
         this.dañoMin = dañoMin;
         this.dañoMax = dañoMax;
-        this.peso = peso;
-        this.durabilidad = durabilidad;
-        this.descripcion = descripcion;
         this.tipoDaño = tipoDaño;
-        this.cantidad = 0;
     }
 }
