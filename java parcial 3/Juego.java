@@ -33,9 +33,9 @@ public class Juego {
 class Jugador {
     static String nombre;
     static ArrayList<ListadoItems> mochila = new ArrayList<>();
-    // public Jugador(String name){
-    // this.name = name;
-    // }
+
+
+    //Métodos del personaje
 
     static public void nombre(String playerName) {
         Jugador.nombre = playerName;
@@ -73,9 +73,6 @@ class ListadoItems {
         return ListadoItems.listaItems.get(indexItem);
     }
 
-    static public Item guardarItem() {
-
-    }
 
     static {
         // === ARMAS ===
@@ -116,9 +113,9 @@ class Item {
     int durabilidad;
     String descripcion;
     String tipoDaño;
+    int cantidad; 
 
-    public Item(String nombre, int dañoMin, int dañoMax, int peso, int durabilidad, String descripcion,
-            String tipoDaño) {
+    public Item(String nombre, int dañoMin, int dañoMax, int peso, int durabilidad, String descripcion,String tipoDaño) {
         this.nombre = nombre;
         this.dañoMin = dañoMin;
         this.dañoMax = dañoMax;
@@ -126,6 +123,7 @@ class Item {
         this.durabilidad = durabilidad;
         this.descripcion = descripcion;
         this.tipoDaño = tipoDaño;
+        this.cantidad = 0; 
     }
 }
 
@@ -137,6 +135,7 @@ class Arma {
     int durabilidad;
     String descripcion;
     String tipoDaño;
+    int cantidad;
 
     public Arma(String nombre, int dañoMin, int dañoMax, int peso, int durabilidad, String descripcion,
             String tipoDaño) {
@@ -147,5 +146,6 @@ class Arma {
         this.durabilidad = durabilidad;
         this.descripcion = descripcion;
         this.tipoDaño = tipoDaño;
+        this.cantidad = 0;
     }
 }
