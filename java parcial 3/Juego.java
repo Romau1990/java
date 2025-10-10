@@ -23,50 +23,60 @@ public class Juego {
             // System.out.println("Bien %s, comienzas tu aventura con un");
             // Jugador.verStats();
             // System.out.println("eres un superviviente y solo tienes disponible un ");
-            Jugador.verMochila(true);
+            Jugador.verMochila();
+            Jugador.verStats();
         }
 
     }
 }
 
 //manejador de la lógica del juego en general
-class Escenario{
-    public Escenario(){
-
-    }
+class Accion{
+    static void huir(){}
+    static void lootear(){}
+    static void crear(){}
+    static void atacar(){}
+    static void disparar(){}
+    static void recargar(){}
+    static void descansar(){}
+    static void comer(){}
+    static void beber(){}
+    static void curarse(){}
+    static void usar(){} //agregaré libros que mejoren ciertas perks.
 }
 
 
 
 
 
-class ObjetoPersona{
-    static int fuerza = 0; 
-}
 
 
-
-
-
-
-
-
-
-class Jugador {
-    static String nombre;
+class Jugador{
     static ArrayList<ObjItem> mochila = new ArrayList<>();
 
-    // Métodos del personaje
+    static String nombre;
+    static int nivel = 1; 
+    static int fuerza = 0; //permite cargar más en la mochila
+    static int resistencia = 0; // permite huir y moverte mas veces en un mismo turno
+    static int percepcion = 0; //permite enconrar más y mejor loot
+    static int ingenio = 0; //permite craftear mejor, más rapido y usar menos recursos
+    static int voluntad = 0; //permite resistir más en el combate, y pasar más tiempo sin comer, tomar agua o dormir. 
+    static int destreza = 0; //aumenta las chances de esquivar ataques a corta y larga distancia
+    static int vida = 0; 
+    static int nutricion = 100; 
+    static int hidratacion = 100; 
+    static int energia = 100;
+
 
     static public void nombre(String playerName) {
         Jugador.nombre = playerName;
     }
 
     static public void verStats() {
-        System.out.println("Nombre jugador: " + Jugador.nombre);
+        System.out.println("--------" + Jugador.nombre + "stats " + "--------");
+        System.out.println(String.format("nombre: %s \nnivel: %d \nfuerza: %d \nresistencia: %d \npersepcion: %d \ningenio: %d \nvoluntad: %d \ndestreza: %d \nvida: %d", Jugador.nombre, Jugador.nivel, Jugador.fuerza, Jugador.resistencia, Jugador.percepcion, Jugador.ingenio, Jugador.voluntad, Jugador.destreza, Jugador.vida));
     }
 
-    //@param verInfoCompleta true -> muestra toda la info, false -> solo lo básico
     static public void verMochila(Boolean verInfoCompleta){
         for(ObjItem obj : Jugador.mochila){
             if(obj instanceof Item){
@@ -137,9 +147,9 @@ class ListadoItems {
 
     static {
         // === ARMAS ===
-        añadirArma(new Arma("Cuchillo", 3, 6, 1, 100, "Cuchillo de cocina afilado.", "corte"));
-        añadirArma(new Arma("Hacha", 5, 10, 5, 120, "Hacha de supervivencia pesada.", "corte"));
-        añadirArma(new Arma("Barra de metal", 4, 8, 4, 150, "Barra sólida de metal oxidada.", "impacto"));
+        añadirArma(new Arma("Cuchillo", 3, 6, 1, 100, "Cuchillo de cocina afilado.", "corte", new String[]{"arma","recoleccion"}));
+        añadirArma(new Arma("Hacha", 5, 10, 5, 120, "Hacha de supervivencia pesada.", "corte", new String[]{"arma","talar"}));
+        añadirArma(new Arma("Barra de metal", 4, 8, 4, 150, "Barra sólida de metal oxidada.", "impacto",new String[]{"arma"}));
         añadirArma(new Arma("Arco y flecha", 6, 12, 3, 80, "Arco de madera con cuerdas tensadas.", "perforante"));
         añadirArma(new Arma("Sartén", 2, 5, 3, 200, "Sartén de hierro, ideal para golpear cabezas.", "impacto"));
         añadirArma(new Arma("Pistola 9mm y balas", 8, 14, 2, 90, "Pistola semiautomática con munición.", "perforante"));
@@ -160,7 +170,7 @@ class ListadoItems {
         añadirItem(new Item("Fuegos artificiales", 2, 1, "Sirven para distraer enemigos o iluminar."));
         añadirItem(new Item("Antibioticos", 1, 1, "Curan infecciones o enfermedades leves."));
         añadirItem(new Item("Garzúa", 1, 100, "Herramienta para forzar cerraduras."));
-        añadirItem(new Item("madera", 2, 0, "Sirve para reparar y construir"));
+        añadirItem(new Item("madera", 2, 0, "Sirve para reparar y construir")); //falta agregar los propositos
 
     }
 
@@ -175,12 +185,14 @@ abstract class ObjItem {
     int durabilidad;
     String descripcion;
     int cantidad;
+    String[] proposito;
 
-    public ObjItem(String nombre, int peso, int durabilidad, String descripcion) {
+    public ObjItem(String nombre, int peso, int durabilidad, String descripcion, String propsito[]) {
         this.nombre = nombre;
         this.peso = peso;
         this.durabilidad = durabilidad;
         this.descripcion = descripcion;
+        this.proposito = proposito;
         this.cantidad = 0;
     }
 
@@ -190,6 +202,7 @@ abstract class ObjItem {
         System.out.println("peso: " + this.peso);
         System.out.println("durabilidad: " + this.durabilidad);
         System.out.println("descripcion: " + this.descripcion);
+        System.out.println("descripcion: " + this.proposito);
         System.out.println("cantidad: " + this.cantidad);
     }
 
@@ -200,8 +213,8 @@ abstract class ObjItem {
 
 // Clase Item sin atributos de daño
 class Item extends ObjItem {
-    public Item(String nombre, int peso, int durabilidad, String descripcion) {
-        super(nombre, peso, durabilidad, descripcion);
+    public Item(String nombre, int peso, int durabilidad, String descripcion, String proposito[]) {
+        super(nombre, peso, durabilidad, descripcion, proposito);
     }
 }
 
@@ -212,8 +225,8 @@ class Arma extends ObjItem {
     String tipoDaño;
 
     public Arma(String nombre, int dañoMin, int dañoMax, int peso, int durabilidad, String descripcion,
-            String tipoDaño) {
-        super(nombre, peso, durabilidad, descripcion);
+            String tipoDaño, String proposito[]) {
+        super(nombre, peso, durabilidad, descripcion, proposito);
         this.dañoMin = dañoMin;
         this.dañoMax = dañoMax;
         this.tipoDaño = tipoDaño;
@@ -227,6 +240,7 @@ class Arma extends ObjItem {
         System.out.println("peso: " + this.peso);
         System.out.println("durabilidad: " + this.durabilidad);
         System.out.println("descripcion: " + this.descripcion);
+        System.out.println("descripcion: " + this.proposito);
         System.out.println("cantidad: " + this.cantidad);
     }
 
