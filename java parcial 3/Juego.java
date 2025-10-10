@@ -23,11 +23,34 @@ public class Juego {
             // System.out.println("Bien %s, comienzas tu aventura con un");
             // Jugador.verStats();
             // System.out.println("eres un superviviente y solo tienes disponible un ");
-            Jugador.verMochila();
+            Jugador.verMochila(true);
         }
 
     }
 }
+
+//manejador de la lógica del juego en general
+class Escenario{
+    public Escenario(){
+
+    }
+}
+
+
+
+
+
+class ObjetoPersona{
+    static int fuerza = 0; 
+}
+
+
+
+
+
+
+
+
 
 class Jugador {
     static String nombre;
@@ -43,25 +66,43 @@ class Jugador {
         System.out.println("Nombre jugador: " + Jugador.nombre);
     }
 
-    static public void verMochila(){
-        System.out.println(Jugador.mochila);
+    //@param verInfoCompleta true -> muestra toda la info, false -> solo lo básico
+    static public void verMochila(Boolean verInfoCompleta){
         for(ObjItem obj : Jugador.mochila){
             if(obj instanceof Item){
                 Item item = (Item) obj;
-                item.verInfo();
+                if(verInfoCompleta == false) { 
+                    item.basicInfo(); 
+                }else{
+                    item.verInfo();
+                }
+                
             }
             else if(obj instanceof Arma){
                 Arma arma = (Arma) obj;
-                arma.verInfo();
+                if(verInfoCompleta == false) { 
+                    arma.basicInfo(); 
+                }else{
+                    arma.verInfo();
+                }
             }
         }
     }
+
+    static public void verMochila(){
+        verMochila(false);
+    }
 }
-    // String nombre;
-    // int peso;
-    // int durabilidad;
-    // String descripcion;
-    // int cantidad;
+
+
+
+
+
+
+
+
+
+
 
 class ListadoItems {
     static ArrayList<Item> listaItems = new ArrayList<>();
@@ -151,6 +192,10 @@ abstract class ObjItem {
         System.out.println("descripcion: " + this.descripcion);
         System.out.println("cantidad: " + this.cantidad);
     }
+
+    public void basicInfo(){
+        System.out.println(this.nombre + " x" + this.cantidad);
+    }
 }
 
 // Clase Item sin atributos de daño
@@ -184,4 +229,10 @@ class Arma extends ObjItem {
         System.out.println("descripcion: " + this.descripcion);
         System.out.println("cantidad: " + this.cantidad);
     }
+
+    public void basicInfo(){
+        System.out.println(this.nombre + " "+ this.dañoMin + "-" + this.dañoMax +" x" + this.cantidad);
+    }
 }
+
+
