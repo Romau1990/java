@@ -25,6 +25,7 @@ public class Juego {
             // System.out.println("eres un superviviente y solo tienes disponible un ");
             Jugador.verMochila();
             Jugador.verStats();
+            Jugador.estadoActual();
         }
 
     }
@@ -32,22 +33,15 @@ public class Juego {
 
 //manejador de la lógica del juego en general
 class Accion{
-    static void huir(){}
-    static void lootear(){}
-    static void crear(){}
     static void atacar(){}
     static void disparar(){}
-    static void recargar(){}
-    static void descansar(){}
-    static void comer(){}
-    static void beber(){}
-    static void curarse(){}
-    static void usar(){} //agregaré libros que mejoren ciertas perks.
+
 }
 
 
+class Enemigo{
 
-
+}
 
 
 
@@ -66,6 +60,8 @@ class Jugador{
     static int nutricion = 100; 
     static int hidratacion = 100; 
     static int energia = 100;
+    static int temperatura = 36;
+    static String estado = "Sano";
 
 
     static public void nombre(String playerName) {
@@ -75,6 +71,10 @@ class Jugador{
     static public void verStats() {
         System.out.println("--------" + Jugador.nombre + "stats " + "--------");
         System.out.println(String.format("nombre: %s \nnivel: %d \nfuerza: %d \nresistencia: %d \npersepcion: %d \ningenio: %d \nvoluntad: %d \ndestreza: %d \nvida: %d", Jugador.nombre, Jugador.nivel, Jugador.fuerza, Jugador.resistencia, Jugador.percepcion, Jugador.ingenio, Jugador.voluntad, Jugador.destreza, Jugador.vida));
+    }
+    static public void estadoActual(){
+        System.out.println("------" + "estado de " + Jugador.nombre + "------");
+        System.out.println(String.format("vida: %d \nnutricion: %d \nhidratacion: %d \nenergia: %d \ntemperatura: %d \nestado: %s", Jugador.vida,Jugador.nutricion,Jugador.hidratacion,Jugador.energia,Jugador.temperatura,Jugador.estado));
     }
 
     static public void verMochila(Boolean verInfoCompleta){
@@ -102,15 +102,16 @@ class Jugador{
     static public void verMochila(){
         verMochila(false);
     }
+
+    static void huir(){}
+    static void lootear(){}
+    static void crear(){}
+    static void recargar(){}
+    static void descansar(){}
+    static void usar(){} //agregaré libros que mejoren ciertas perks.
+    static void esconderse(){}
+    static void soltar(){}
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -150,28 +151,28 @@ class ListadoItems {
         añadirArma(new Arma("Cuchillo", 3, 6, 1, 100, "Cuchillo de cocina afilado.", "corte", new String[]{"arma","recoleccion"}));
         añadirArma(new Arma("Hacha", 5, 10, 5, 120, "Hacha de supervivencia pesada.", "corte", new String[]{"arma","talar"}));
         añadirArma(new Arma("Barra de metal", 4, 8, 4, 150, "Barra sólida de metal oxidada.", "impacto",new String[]{"arma"}));
-        añadirArma(new Arma("Arco y flecha", 6, 12, 3, 80, "Arco de madera con cuerdas tensadas.", "perforante"));
-        añadirArma(new Arma("Sartén", 2, 5, 3, 200, "Sartén de hierro, ideal para golpear cabezas.", "impacto"));
-        añadirArma(new Arma("Pistola 9mm y balas", 8, 14, 2, 90, "Pistola semiautomática con munición.", "perforante"));
-        añadirArma(new Arma("Llave de tuercas", 3, 7, 3, 130, "Herramienta de metal resistente.", "impacto"));
-        añadirArma(new Arma("Nada", 0, 0, 0, 0, "No tenés un arma equipada.", "ninguno"));
-        añadirArma(new Arma("Bisturí", 2, 4, 1, 50, "Instrumento quirúrgico muy filoso.", "corte"));
-        añadirArma(new Arma("Destornillador", 2, 5, 1, 80, "Destornillador común, útil y mortal.", "perforante"));
+        añadirArma(new Arma("Arco y flecha", 6, 12, 3, 80, "Arco de madera con cuerdas tensadas.", "perforante",new String[]{"arma","caceria"}));
+        añadirArma(new Arma("Sartén", 2, 5, 3, 200, "Sartén de hierro, ideal para golpear cabezas.", "impacto", new String[]{"arma","cocina", "recipiente"}));
+        añadirArma(new Arma("Pistola 9mm y balas", 8, 14, 2, 90, "Pistola semiautomática con munición.", "perforante", new String[]{"arma","caceria"}));
+        añadirArma(new Arma("Llave de tuercas", 3, 7, 3, 130, "Herramienta de metal resistente.", "impacto", new String[]{"arma","desguace"}));
+        añadirArma(new Arma("Nada", 0, 0, 0, 0, "No tenés un arma equipada.", "ninguno",new String[]{"nada"}));
+        añadirArma(new Arma("Bisturí", 2, 4, 1, 50, "Instrumento quirúrgico muy filoso.", "corte", new String[]{"arma","recoleccion", "curar", "reparacion"}));
+        añadirArma(new Arma("Destornillador", 2, 5, 1, 80, "Destornillador común, útil y mortal.", "perforante",new String[]{"arma","desguace", "reparacion"}));
 
         // === ITEMS ===
-        añadirItem(new Item("Vendaje", 1, 1, "Sirve para detener hemorragias leves."));
-        añadirItem(new Item("Carne cruda", 2, 1, "Carne sin cocinar, puede enfermarte."));
-        añadirItem(new Item("Botella de agua", 1, 1, "Agua limpia para hidratarte."));
-        añadirItem(new Item("Chatarra", 3, 1, "Restos metálicos, útiles para reparar cosas."));
-        añadirItem(new Item("Electronicos", 2, 1, "Piezas electrónicas para fabricar o reparar."));
-        añadirItem(new Item("Fosforos", 1, 1, "Caja con fósforos secos."));
-        añadirItem(new Item("Linterna", 2, 80, "Linterna de mano para iluminar."));
-        añadirItem(new Item("Sobre de dormir", 3, 200, "Permite descansar y recuperar energía."));
-        añadirItem(new Item("Fuegos artificiales", 2, 1, "Sirven para distraer enemigos o iluminar."));
-        añadirItem(new Item("Antibioticos", 1, 1, "Curan infecciones o enfermedades leves."));
-        añadirItem(new Item("Garzúa", 1, 100, "Herramienta para forzar cerraduras."));
-        añadirItem(new Item("madera", 2, 0, "Sirve para reparar y construir")); //falta agregar los propositos
-
+        añadirItem(new Item("Vendaje", 1, 1, "Sirve para detener hemorragias leves.", new String[]{"curar"}));
+        añadirItem(new Item("Carne cruda", 2, 1, "Carne sin cocinar, puede enfermarte.", new String[]{"arma","recoleccion"}));
+        añadirItem(new Item("Botella de agua", 1, 1, "Agua limpia para hidratarte.", new String[]{"hidratacion", "recipiente"}));
+        añadirItem(new Item("Chatarra", 3, 1, "Restos metálicos, útiles para reparar cosas.",new String[]{"reparacion", "creacion"}));
+        añadirItem(new Item("Electronicos", 2, 1, "Piezas electrónicas para fabricar o reparar.", new String[]{"reparacion","creacion"}));
+        añadirItem(new Item("Fosforos", 1, 1, "Caja con fósforos secos.", new String[]{"encender","cocinar", "iluminar"}));
+        añadirItem(new Item("Linterna", 2, 80, "Linterna de mano para iluminar.", new String[]{"iluminar"}));
+        añadirItem(new Item("Sobre de dormir", 3, 200, "Permite descansar y recuperar energía.", new String[]{"descansar", "abrigar"}));
+        añadirItem(new Item("Fuegos artificiales", 2, 1, "Sirven para distraer enemigos o iluminar.",new String[]{"arma","recoleccion"}));
+        añadirItem(new Item("Antibioticos", 1, 1, "Curan infecciones o enfermedades leves.",new String[]{"antibiotico"}));
+        añadirItem(new Item("Garzúa", 1, 100, "Herramienta para forzar cerraduras.", new String[]{"abrir"}));
+        añadirItem(new Item("madera", 2, 0, "Sirve para reparar y construir", new String[]{"reparacion","creacion"})); //falta agregar los propositos
+        añadirItem(new Item("carne enlatada", 2, 0, "Alimento no muy sabroso pero quita el hambre", new String[]{"alimentacion", "recipiente"}));
     }
 
 }
