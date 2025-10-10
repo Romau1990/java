@@ -16,32 +16,28 @@ public class Juego {
             // COMIENZA EL JUEGO
             int turno = 0;
             int test = 0;
-            ListadoItems.darArma();
-            ListadoItems.darItem();
+            // ListadoItems.darArma();
+            // ListadoItems.darItem();
             // String nombreJugador = JOptionPane.showInputDialog("Cual es tu nombre?");
             // Jugador.nombre(nombreJugador);
             // System.out.println("Bien %s, comienzas tu aventura con un");
             // Jugador.verStats();
             // System.out.println("eres un superviviente y solo tienes disponible un ");
-            Jugador.verMochila();
-            Jugador.verStats();
-            Jugador.estadoActual();
+            Jugador.lootear();
         }
 
     }
 }
 
-//manejador de la lógica del juego en general
+//Accion genera la interaccion entre el enemigo y el jugador. Es decir, la batalla. 
 class Accion{
     static void atacar(){}
     static void disparar(){}
+    static void huir(){}
 
 }
 
 
-class Enemigo{
-
-}
 
 
 
@@ -103,11 +99,13 @@ class Jugador{
         verMochila(false);
     }
 
-    static void huir(){}
-    static void lootear(){}
+    static void lootear(){
+        for(ObjItem item : ListadoItems.todoElLoot){
+            System.out.println("esto es lo que salio gil: " + item); //ESTO NO ESTA FUNCIONANDO Y NO SE PORQUE. CUIDADO
+        }
+    }
     static void crear(){}
     static void recargar(){}
-    static void descansar(){}
     static void usar(){} //agregaré libros que mejoren ciertas perks.
     static void esconderse(){}
     static void soltar(){}
@@ -118,6 +116,7 @@ class Jugador{
 class ListadoItems {
     static ArrayList<Item> listaItems = new ArrayList<>();
     static ArrayList<Arma> listaArmas = new ArrayList<>();
+    static ArrayList<ObjItem> todoElLoot = new ArrayList<>();
 
     static public void añadirArma(Arma arma) {
         listaArmas.add(arma);
