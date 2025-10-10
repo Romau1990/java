@@ -18,13 +18,12 @@ public class Juego {
             int test = 0;
             ListadoItems.darArma();
             ListadoItems.darItem();
-
-            String nombreJugador = JOptionPane.showInputDialog("Cual es tu nombre?");
-            Jugador.nombre(nombreJugador);
-            System.out.println("Bien %s, comienzas tu aventura con un");
-            Jugador.verStats();
-            System.out.println("eres un superviviente y solo tienes disponible un ");
-
+            // String nombreJugador = JOptionPane.showInputDialog("Cual es tu nombre?");
+            // Jugador.nombre(nombreJugador);
+            // System.out.println("Bien %s, comienzas tu aventura con un");
+            // Jugador.verStats();
+            // System.out.println("eres un superviviente y solo tienes disponible un ");
+            Jugador.verMochila();
         }
 
     }
@@ -43,7 +42,26 @@ class Jugador {
     static public void verStats() {
         System.out.println("Nombre jugador: " + Jugador.nombre);
     }
+
+    static public void verMochila(){
+        System.out.println(Jugador.mochila);
+        for(ObjItem obj : Jugador.mochila){
+            if(obj instanceof Item){
+                Item item = (Item) obj;
+                item.verInfo();
+            }
+            else if(obj instanceof Arma){
+                Arma arma = (Arma) obj;
+                arma.verInfo();
+            }
+        }
+    }
 }
+    // String nombre;
+    // int peso;
+    // int durabilidad;
+    // String descripcion;
+    // int cantidad;
 
 class ListadoItems {
     static ArrayList<Item> listaItems = new ArrayList<>();
@@ -60,8 +78,9 @@ class ListadoItems {
     // entrega un arma inicial al jugador
     static public Arma darArma() {
         var indexArma = (int) (Math.random() * ListadoItems.listaArmas.size());
-        System.out.println(ListadoItems.listaArmas.get(indexArma).nombre);
+        System.out.println(ListadoItems.listaArmas.get(indexArma).nombre + " x" + "1");
         Jugador.mochila.add(ListadoItems.listaArmas.get(indexArma));
+        ListadoItems.listaArmas.get(indexArma).cantidad++;
         return ListadoItems.listaArmas.get(indexArma);
     }
 
@@ -69,7 +88,8 @@ class ListadoItems {
     static public Item darItem() {
         var indexItem = (int) (Math.random() * ListadoItems.listaArmas.size());
         var cantidadItem = (int) ((Math.random() + 1) * 5);
-        System.out.println(ListadoItems.listaItems.get(indexItem).nombre + " x" + cantidadItem);
+        System.out.println(ListadoItems.listaItems.get(indexItem).nombre + " x" + cantidadItem); //muestra la info
+        ListadoItems.listaItems.get(indexItem).cantidad = cantidadItem;
         Jugador.mochila.add(ListadoItems.listaItems.get(indexItem));
         return ListadoItems.listaItems.get(indexItem);
     }
@@ -105,7 +125,7 @@ class ListadoItems {
 
 }
 
-// plantilla de items
+// plantilla de clases
 
 // Clase padre solo con atributos comunes
 abstract class ObjItem {
@@ -121,6 +141,15 @@ abstract class ObjItem {
         this.durabilidad = durabilidad;
         this.descripcion = descripcion;
         this.cantidad = 0;
+    }
+
+    public void verInfo(){
+        System.out.println("------------" + this.nombre + "---------------");
+        System.out.println("nombre: " + this.nombre);
+        System.out.println("peso: " + this.peso);
+        System.out.println("durabilidad: " + this.durabilidad);
+        System.out.println("descripcion: " + this.descripcion);
+        System.out.println("cantidad: " + this.cantidad);
     }
 }
 
@@ -143,5 +172,16 @@ class Arma extends ObjItem {
         this.dañoMin = dañoMin;
         this.dañoMax = dañoMax;
         this.tipoDaño = tipoDaño;
+    }
+
+    public void verInfo(){
+        System.out.println("------------" + this.nombre + "---------------");
+        System.out.println("Item: " + this.nombre);
+        System.out.println("daño: " + this.dañoMin + "-" + this.dañoMax);
+        System.out.println("tipo de daño: " + this.tipoDaño);
+        System.out.println("peso: " + this.peso);
+        System.out.println("durabilidad: " + this.durabilidad);
+        System.out.println("descripcion: " + this.descripcion);
+        System.out.println("cantidad: " + this.cantidad);
     }
 }
