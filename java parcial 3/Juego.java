@@ -4,26 +4,30 @@ import java.util.*;
 public class Juego {
     public static void main(String[] args) {
 
-        Scanner game = new Scanner(System.in);
-
+        
         var choice = JOptionPane.showConfirmDialog(null,
-                "Bienvenido superviviente, listo para comenzar tu aventura? presiona CONTINUAR si lo estas o CANCELAR si quieres abanonar");
-
+        "Bienvenido superviviente, listo para comenzar tu aventura? presiona CONTINUAR si lo estas o CANCELAR si quieres abanonar");
+        
         if (choice == 1) {
             JOptionPane.showMessageDialog(null, "has abandonado la partida");
         } else {
-
-            // COMIENZA EL JUEGO
+            
+            // COMIENZA EL JUEGO ___________________________________________________________
+            String[] areas = {"Casa", "Ciudad", "playa", "Colina", "basurero", "bosque", "sitio en construcción", "caverna", "campo", "Tienda"};
+            Scanner game = new Scanner(System.in);
             int turno = 0;
             int test = 0;
-            // ListadoItems.darArma();
-            // ListadoItems.darItem();
-            // String nombreJugador = JOptionPane.showInputDialog("Cual es tu nombre?");
-            // Jugador.nombre(nombreJugador);
-            // System.out.println("Bien %s, comienzas tu aventura con un");
-            // Jugador.verStats();
-            // System.out.println("eres un superviviente y solo tienes disponible un ");
-            Jugador.lootear();
+            ListadoItems.darArma();
+            ListadoItems.darItem();
+            String nombreJugador = JOptionPane.showInputDialog("Cual es tu nombre?");
+            Jugador.nombre(nombreJugador);
+            System.out.println(String.format("Bien %s, comienzas tu aventura con un", nombreJugador));
+            Jugador.verMochila();
+            
+
+
+            //elegis cuantos turnos moverte.. pero cada turno recibe una penalización
+
         }
 
     }
@@ -39,7 +43,7 @@ class Accion{
 
 
 
-
+//voy a cambiar ObjItem por ListadoItems
 
 class Jugador{
     static ArrayList<ObjItem> mochila = new ArrayList<>();
@@ -100,30 +104,41 @@ class Jugador{
     }
 
     static void lootear(){
-        for(ObjItem item : ListadoItems.todoElLoot){
-            System.out.println("esto es lo que salio gil: " + item); //ESTO NO ESTA FUNCIONANDO Y NO SE PORQUE. CUIDADO
-        }
+        System.out.println("Has obtenido:");
+        ListadoItems.randomItem().basicInfo();
     }
+
     static void crear(){}
     static void recargar(){}
     static void usar(){} //agregaré libros que mejoren ciertas perks.
-    static void esconderse(){}
-    static void soltar(){}
+    static void esconderse(){
+        // for(ObjItem obj : Jugador.mochila){
+        //     System.out.println(obj.getDescription());
+        // }
+    }
+    static void soltar(String item){
+        Jugador.mochila.removeIf(obj -> obj.getNombre().equalsIgnoreCase(item));
+    }
 }
 
 
 
+
+
+//LISTA DE TODOS LOS ITEMS DEL JUEGO
 class ListadoItems {
-    static ArrayList<Item> listaItems = new ArrayList<>();
-    static ArrayList<Arma> listaArmas = new ArrayList<>();
-    static ArrayList<ObjItem> todoElLoot = new ArrayList<>();
+    static ArrayList<Item> listaItems = new ArrayList<>(); //solo accceso a Items
+    static ArrayList<Arma> listaArmas = new ArrayList<>(); //solo acceso a Armas
+    static ArrayList<ObjItem> todoElLoot = new ArrayList<>(); //aca uso ObjItems que es padre de item y arma por ende tiene acceso a ambos.
 
     static public void añadirArma(Arma arma) {
         listaArmas.add(arma);
+        todoElLoot.add(arma);
     }
 
     static public void añadirItem(Item item) {
         listaItems.add(item);
+        todoElLoot.add(item);
     }
 
     // entrega un arma inicial al jugador
@@ -143,6 +158,14 @@ class ListadoItems {
         ListadoItems.listaItems.get(indexItem).cantidad = cantidadItem;
         Jugador.mochila.add(ListadoItems.listaItems.get(indexItem));
         return ListadoItems.listaItems.get(indexItem);
+    }
+
+    static public ObjItem randomItem(){
+        var cantidadItem = (int) ((Math.random() + 1) * 5);
+        var index = (int)(Math.random() * ListadoItems.todoElLoot.size());
+        Jugador.mochila.add(ListadoItems.todoElLoot.get(index));
+        ListadoItems.todoElLoot.get(index).cantidad = cantidadItem;
+        return ListadoItems.todoElLoot.get(index);
     }
 
     static {
@@ -196,6 +219,26 @@ abstract class ObjItem {
         this.cantidad = 0;
     }
 
+    public String getNombre(){
+        return this.nombre;
+    }
+
+    public int getPeso(){
+        return this.peso;
+    }
+
+    public int getDurabilidad(){
+        return this.durabilidad;
+    }
+
+    public String getDescription(){
+        return this.descripcion;
+    }
+
+    public String[] getProposito(){
+        return this.proposito; 
+    }
+
     public void verInfo(){
         System.out.println("------------" + this.nombre + "---------------");
         System.out.println("nombre: " + this.nombre);
@@ -210,6 +253,11 @@ abstract class ObjItem {
         System.out.println(this.nombre + " x" + this.cantidad);
     }
 }
+
+
+
+
+
 
 // Clase Item sin atributos de daño
 class Item extends ObjItem {
