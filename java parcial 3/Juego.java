@@ -15,16 +15,28 @@ public class Juego {
 
             // INICIALIZACION DE VARIABLES Y DATOS _________________________________________
 
-            String[] areasDelJuego = { "Casa", "Ciudad", "playa", "Colina", "basurero", "bosque",
+            String[] areas = new String[] { "Casa", "Ciudad", "playa", "Colina", "basurero", "bosque",
                     "sitio en construcción", "caverna", "campo", "Tienda", "iglesia abandonada", "caravana", "puente" };
+
+            ArrayList<String> areasDeJuego = new ArrayList<>(Arrays.asList(areas));
+            Collections.shuffle(areasDeJuego);
 
             Boolean estadoJuego = true;
             Scanner game = new Scanner(System.in);
             int turno = 0;
+
+            // items agregados automaticamente a la mochila del personaje.
             ListadoItems.darArma();
             ListadoItems.darItem();
+
             String nombreJugador = JOptionPane.showInputDialog("Cual es tu nombre?");
-            Jugador.nombre(nombreJugador);
+            if (nombreJugador == null || nombreJugador.isBlank()) {
+                while (nombreJugador == null || nombreJugador.isBlank()) {
+                    nombreJugador = JOptionPane.showInputDialog("Cual es tu nombre?");
+                }
+            } else {
+                Jugador.nombre(nombreJugador);
+            }
 
             // INTRO DEL
             // JUEGO_______________________________________________________________
@@ -37,7 +49,6 @@ public class Juego {
             System.out.println("----------------------");
             Jugador.verMochila();
             System.out.println("----------------------");
-            System.out.println("para equipar tu arma escribe equipar");
 
             // BUCLE DEL
             // JUEGO_______________________________________________________________________
@@ -46,35 +57,51 @@ public class Juego {
 
                 // opciones de menu
                 System.out.println("=== MENU ==== ");
-                System.out.println("ver comandos -> comandos");
+                System.out.print("ver comandos -> comandos ----------");
+                System.out.print("iniciar partida -> iniciar ----------");
+                System.out.print("turno: " + turno);
+                System.out.println("salir del juego-> salir ");
+                System.out.println(
+                        "----------------------------------------------------------------------------------------");
                 System.out.println("¿Que harás ahora?");
-                var accionTomada = game.nextLine();
-                System.out.println(accionTomada);
 
-                if (accionTomada.equalsIgnoreCase("comandos")) {
-                    Comandos.verComandos();
-                } else {
-                    // sitios
-                    for (var i = 0; i < 5; i++) {
-                        int indexAreas = (int) (Math.random() * areasDelJuego.length);
+                // en accion tomada, además de salir iniciar podría usar esta instancia para
+                // descansar, curarme, etc.
+                var accionTomada = game.nextLine().toLowerCase();
+
+                String[] partes = accionTomada.split(" ", 2);
+                String comando = partes[0];
+                String parametro = partes.length > 1 ? partes[1] : "";
+
+                if (accionTomada.equalsIgnoreCase("iniciar")) {
+
+                    // seleccion de area
+                    System.out.println("----------------------");
+                    System.out.println("A donde quieres ir?");
+
+                    for (var i = 1; i < 5; i++) {
+                        String nombreSitio = areasDeJuego.get(i);
                         int cantidadTurnos = (int) (Math.random() * 5);
-                        System.out.println(areasDelJuego[indexAreas] + "---" + cantidadTurnos + " turnos");
+                        System.out.println(areasDeJuego.get(i) + "------------------" + cantidadTurnos + " turnos");
                     }
 
-                   switch(accionTomada){
-                     case "comando desconocido":
-                        System.out.println("Todavia no se");
+                    String sitioElegido = game.nextLine();
+                    System.out.println("----------------------");
+                    System.out.println("has llegado al sitio: " + sitioElegido);
+
+                } else if (accionTomada.equalsIgnoreCase("comandos")) {
+                    Comandos.verComandos();
+                } else if (accionTomada.equalsIgnoreCase("salir")) {
+                    JOptionPane.showMessageDialog(null, "has abandonado la partida");
+                    System.exit(0);
+                }
+
+                // Acciones del jugador
+
+                switch (comando) {
+                    case "equipar":
+                        Jugador.equipar(parametro);
                         break;
-                   }
-
-
-
-
-
-
-
-
-
                 }
 
             }
@@ -112,7 +139,7 @@ class Comandos {
         System.out.println("estado actual -> ver la condicion de salud actual de tu personaje");
         System.out.println("ver stats -> ver las estadisticas de tu personaje");
         System.out.println("equipar [item] -> ver las estadisticas de tu personaje");
-
+        System.out.println("----------------------");
     }
 }
 
@@ -187,6 +214,7 @@ class Jugador {
     }
 
     static void crear() {
+        System.out.println("acabas de crear un item");
     }
 
     static void recargar() {
@@ -201,7 +229,24 @@ class Jugador {
         // }
     }
 
-    static void equipar() {
+    static void equipar(String weapon) {
+        boolean encontrado = false;
+
+        for (ObjItem item : Jugador.mochila) {
+            if (item.getNombre().equalsIgnoreCase(weapon)
+                    && item.getProposito() != null
+                    && Arrays.asList(item.getProposito()).contains("arma")) {
+
+                item.getNombre().concat("[equipado]");
+                System.out.println("Te has equipado: " + weapon);
+                encontrado = true;
+                break; // ya encontraste el arma, no hace falta seguir
+            }
+        }
+
+        if (!encontrado) {
+            System.out.println("No puedes equipar este objeto");
+        }
     }
 
     static void soltar(String item) {
@@ -317,7 +362,7 @@ abstract class ObjItem {
     int cantidad;
     String[] proposito;
 
-    public ObjItem(String nombre, int peso, int durabilidad, String descripcion, String propsito[]) {
+    public ObjItem(String nombre, int peso, int durabilidad, String descripcion, String proposito[]) {
         this.nombre = nombre;
         this.peso = peso;
         this.durabilidad = durabilidad;
@@ -394,7 +439,15 @@ class Arma extends ObjItem {
         System.out.println("cantidad: " + this.cantidad);
     }
 
+    public String getNombre() {
+        return this.nombre;
+    }
+
     public void basicInfo() {
         System.out.println(this.nombre + " " + this.dañoMin + "-" + this.dañoMax + " x" + this.cantidad);
+    }
+
+    public String[] getProposito() {
+        return this.proposito;
     }
 }
