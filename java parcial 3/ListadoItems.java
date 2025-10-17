@@ -77,32 +77,32 @@ public class ListadoItems {
                                 new String[] { "arma", "desguace", "reparacion" }));
 
                 // === ITEMS ===
-                añadirItem(new Item("Vendaje", 1, 1, 1, "Sirve para detener hemorragias leves.",
-                                new String[] { "curar" }));
-                añadirItem(new Item("Carne cruda", 1, 2, 1, "Carne sin cocinar, puede enfermarte.",
-                                new String[] { "arma", "recoleccion" }));
-                añadirItem(new Item("Botella de agua", 1, 1, 1, "Agua limpia para hidratarte.",
-                                new String[] { "hidratacion", "recipiente" }));
-                añadirItem(new Item("Chatarra", 1, 3, 1, "Restos metálicos, útiles para reparar cosas.",
-                                new String[] { "reparacion", "creacion" }));
-                añadirItem(new Item("Electronicos", 1, 2, 1, "Piezas electrónicas para fabricar o reparar.",
-                                new String[] { "reparacion", "creacion" }));
-                añadirItem(new Item("Fosforos", 1, 1, 1, "Caja con fósforos secos.",
-                                new String[] { "encender", "cocinar", "iluminar" }));
-                añadirItem(new Item("Linterna", 1, 2, 80, "Linterna de mano para iluminar.",
-                                new String[] { "iluminar" }));
-                añadirItem(new Item("Sobre de dormir", 1, 3, 200, "Permite descansar y recuperar energía.",
-                                new String[] { "descansar", "abrigar" }));
-                añadirItem(new Item("Fuegos artificiales", 1, 2, 1, "Sirven para distraer enemigos o iluminar.",
-                                new String[] { "arma", "recoleccion" }));
-                añadirItem(new Item("Antibioticos", 1, 1, 1, "Curan infecciones o enfermedades leves.",
-                                new String[] { "antibiotico" }));
-                añadirItem(new Item("Garzúa", 1, 1, 100, "Herramienta para forzar cerraduras.",
-                                new String[] { "abrir" }));
-                añadirItem(new Item("madera", 1, 2, 0, "Sirve para reparar y construir",
-                                new String[] { "reparacion", "creacion" }));
-                añadirItem(new Item("carne enlatada", 1, 2, 0, "Alimento no muy sabroso pero quita el hambre",
-                                new String[] { "alimentacion", "recipiente" }));
+                añadirItem(new Item("Vendaje", 1, 1, "Sirve para detener hemorragias leves.",
+                                new String[] { "curar" },1));
+                añadirItem(new Item("Carne cruda", 1, 2, "Carne sin cocinar, puede enfermarte.",
+                                new String[] { "arma", "recoleccion" },3));
+                añadirItem(new Item("Botella de agua", 1, 1, "Agua limpia para hidratarte.",
+                                new String[] { "hidratacion", "recipiente" },0));
+                añadirItem(new Item("Chatarra", 1, 3, "Restos metálicos, útiles para reparar cosas.",
+                                new String[] { "reparacion", "creacion" },0));
+                añadirItem(new Item("Electronicos", 1, 2, "Piezas electrónicas para fabricar o reparar.",
+                                new String[] { "reparacion", "creacion" },0));
+                añadirItem(new Item("Fosforos", 1, 1, "Caja con fósforos secos.",
+                                new String[] { "encender", "cocinar", "iluminar" },1));
+                añadirItem(new Item("Linterna", 1, 2, "Linterna de mano para iluminar.",
+                                new String[] { "iluminar" },0));
+                añadirItem(new Item("Sobre de dormir", 1, 3, "Permite descansar y recuperar energía.",
+                                new String[] { "descansar", "abrigar" },2));
+                añadirItem(new Item("Fuegos artificiales", 1, 2, "Sirven para distraer enemigos o iluminar.",
+                                new String[] { "arma", "recoleccion" },1));
+                añadirItem(new Item("Antibioticos", 1, 1, "Curan infecciones o enfermedades leves.",
+                                new String[] { "antibiotico" },0));
+                añadirItem(new Item("Garzúa", 1, 1, "Herramienta para forzar cerraduras.",
+                                new String[] { "abrir" },3));
+                añadirItem(new Item("madera", 1, 2, "Sirve para reparar y construir",
+                                new String[] { "reparacion", "creacion" },0));
+                añadirItem(new Item("carne enlatada", 1, 2, "Alimento no muy sabroso pero quita el hambre",
+                                new String[] { "alimentacion", "recipiente" },2));
 
         }
 

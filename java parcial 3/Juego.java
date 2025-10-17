@@ -43,14 +43,6 @@ public class Juego {
 
             // COMIENZA EL JUEGO
 
-            // INICIALIZACION DE VARIABLES Y DATOS _________________________________________
-
-            String[] areas = new String[] { "Casa", "Ciudad", "playa", "Colina", "basurero", "bosque",
-                    "sitio en construcción", "caverna", "campo", "Tienda", "iglesia abandonada", "caravana", "puente" };
-
-            ArrayList<String> areasDeJuego = new ArrayList<>(Arrays.asList(areas));
-            Collections.shuffle(areasDeJuego);
-
             Scanner game = new Scanner(System.in);
 
             // pide el nombre del jugador
@@ -94,13 +86,12 @@ public class Juego {
                 System.out.println("turno: " + turno + " nombre: " + nombreJugador);
                 System.out.print("ver comandos -> comandos ----------");
                 System.out.println("salir del juego-> salir |");
+                System.out.println("----------------------------------------------------------------------------------------------------------------");
 
-                // en accion tomada, además de salir iniciar podría usar esta instancia para
-                // descansar, curarme, etc.
-                System.out.println(
-                        "----------------------------------------------------------------------------------------------------------------");
+                // en accion tomada, además de salir iniciar podría usar esta instancia paradescansar, curarme, etc.
                 System.out.println("¿Que harás ahora?");
                 var accionTomada = game.nextLine().toLowerCase();
+
                 if (accionTomada.equalsIgnoreCase("comandos")) {
                     Comandos.verComandos();
                 } else if (accionTomada.equalsIgnoreCase("salir")) {
@@ -113,8 +104,8 @@ public class Juego {
                 String comando = partes[0];
                 String parametro = partes.length > 1 ? partes[1] : "";
 
-                // Acciones del jugador
 
+                // Acciones del jugador
                 switch (comando) {
                     case "equipar":
                         Jugador.equipar(parametro);
@@ -124,26 +115,18 @@ public class Juego {
                         // seleccion de area
                         System.out.println("----------------------");
                         System.out.println("A donde quieres ir?");
-
                         String sitioElegido = game.nextLine();
                         Jugador.viajar(sitioElegido);
-
                         System.out.println("----------------------");
-                        System.out.println("has llegado al sitio: " + sitioElegido);
                         break;
                 }
 
+
+
+
+                
             }
-
         }
-
+        
     }
 }
-
-
-
-                        // for (var i = 0; i < 4; i++) {
-                        //     var turnoSitio = (int) (Math.random() * 5);
-                        //     String nombreSitio = areasDeJuego.get(i);
-                        //     System.out.println(nombreSitio + "------------------" + turnoSitio + " turnos");
-                        // }

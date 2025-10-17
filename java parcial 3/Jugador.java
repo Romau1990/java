@@ -17,13 +17,41 @@ public class Jugador {
     static int voluntad = 0; // permite resistir más en el combate, y pasar más tiempo sin comer, tomar agua
                              // o dormir.
     static int destreza = 0; // aumenta las chances de esquivar ataques a corta y larga distancia
-    static int vida = 0;
+    static int vida = 100;
     static int nutricion = 100;
     static int hidratacion = 100;
     static int energia = 100;
     static int temperatura = 36;
+    static Boolean inanicion = false;
+    static Boolean deshidratacion = false;
+    static Boolean cansancio = false;
+    static Boolean hipotermia = false;
+    static Boolean insolacion = false;
     static String estado = "Sano";
     private static int turno = 0;
+
+    static {
+
+        if (nutricion < 40) {
+            Estado.inanicion();
+        }
+        if (hidratacion < 40) {
+            Estado.deshidratacion();
+        }
+        if (energia < 40) {
+            Estado.inanicion();
+        }
+        if (temperatura > 39) {
+            Estado.hipotermia();;
+        }
+        if (temperatura < 35) {
+            Estado.insolacion();
+        }
+        if(vida < 30 && nutricion < 50){
+            Estado.infeccion();
+        }
+
+    }
 
     static public void nombre(String playerName) {
         Jugador.nombre = playerName;
@@ -97,6 +125,7 @@ public class Jugador {
                     Thread.sleep(1000);
                 }
                 System.out.println("Has llegado a: " + area);
+                Area.areaSeleccionada(area);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
