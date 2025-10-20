@@ -64,9 +64,9 @@ public class Juego {
 
             // Consejos rápidos antes de iniciar la partida
             System.out.println(
-                    "Recuerda que puedes elegir un sitio a donde ir cada vez. Cada sitio te mostrará cuantos turnos necesitaras para llegar hasta ese punto.");
+                    "========================================================================================================= ");
             System.out.println(
-                    "Cada turno consumira un poco de tu energia, ten cuidado con eso. Si quieres mantenerte alimentado e hidratado usa los items que encuentres en el juego");
+                    "HINT: Si esta es tu primera partida, no dudes en visitar la consola de comandos escribiendo 'comandos'");
             System.out.println(String.format("Bien %s, comienzas tu aventura con: ", nombreJugador));
             System.out.println("----------------------");
             Jugador.verMochila();
@@ -76,26 +76,33 @@ public class Juego {
             // JUEGO_______________________________________________________________________
 
             Boolean estadoJuego = true;
-            int turno = 0;
+            Boolean haViajado = false;
 
             while (true) {
 
                 // opciones estaticas de menu (se mostrarán siempre como ayuda memoria para el
                 // jugador)
-                System.out.println("=== MENU ==== ");
-                System.out.println("turno: " + turno + " nombre: " + nombreJugador);
+                System.out.println(Juego.BLANCO +
+                        "=== MENU ====================================================================================================== ");
+                System.out.println("turno: " + Jugador.getTurno() + " ----------" + " nombre: " + nombreJugador
+                        + " ----------" + " dinero: " + Jugador.dinero + "---------- " + "vida: " + Jugador.vida);
                 System.out.print("ver comandos -> comandos ----------");
                 System.out.println("salir del juego-> salir |");
-                System.out.println("----------------------------------------------------------------------------------------------------------------");
+                System.out.println(
+                        "===============================================================================================================");
 
-                // en accion tomada, además de salir iniciar podría usar esta instancia paradescansar, curarme, etc.
-                System.out.println("¿Que harás ahora?");
+                // en accion tomada, además de salir iniciar podría usar esta instancia
+                // paradescansar, curarme, etc.
+                System.out.println(Juego.BLANCO + "¿Que harás ahora?");
+                System.out.println(
+                        "----------------------------------------------------------------------------------------------------------------");
                 var accionTomada = game.nextLine().toLowerCase();
 
                 if (accionTomada.equalsIgnoreCase("comandos")) {
                     Comandos.verComandos();
                 } else if (accionTomada.equalsIgnoreCase("salir")) {
                     JOptionPane.showMessageDialog(null, "has abandonado la partida");
+                    estadoJuego = false;
                     System.exit(0);
                 }
 
@@ -104,29 +111,85 @@ public class Juego {
                 String comando = partes[0];
                 String parametro = partes.length > 1 ? partes[1] : "";
 
-
                 // Acciones del jugador
                 switch (comando) {
                     case "equipar":
                         Jugador.equipar(parametro);
                         break;
 
+                    case "mapa":
+                        System.out.println(
+                                "Recuerda que puedes elegir un sitio a donde ir cada vez. Cada sitio te mostrará cuantos turnos necesitaras para llegar hasta ese punto.");
+                        System.out.println(
+                                "Cada turno consumira un poco de tu energia, ten cuidado con eso. Si quieres mantenerte alimentado e hidratado usa los items que encuentres en el juego");
+                        Jugador.verMapa();
+                        break;
+
                     case "viajar":
                         // seleccion de area
-                        System.out.println("----------------------");
-                        System.out.println("A donde quieres ir?");
-                        String sitioElegido = game.nextLine();
-                        Jugador.viajar(sitioElegido);
-                        System.out.println("----------------------");
+                        System.out.println(
+                                "----------------------------------------------------------------------------------------------------------------");
+                        System.out.println("A donde quieres ir? Si no estas seguro puedes ver el mapa");
+                        System.out.println(
+                                "----------------------------------------------------------------------------------------------------------------");
+                        String sitioElegido = game.nextLine().trim();
+                        Boolean sitioEncontrado = false;
+                        for (String a : Area.ListaAreas) {
+                            var split = a.split("-");
+                            String sitio = split[0].trim();
+
+                            var t = a.split(":");
+                            int turno = Integer.parseInt(t[1].trim());
+
+                            if (sitio.equalsIgnoreCase(sitioElegido)) {
+                                sitioEncontrado = true;
+                                Jugador.incrementarTurno(turno);
+                                Jugador.viajar(sitioElegido);
+                                break;
+                            }
+                        }
+                        if (sitioEncontrado == false) {
+                            System.out.println(Juego.ROJO + "ese sitio no existe en el mapa. Revisa nuevamente");
+                        } else if (sitioEncontrado == true) {
+                            haViajado = true;
+                        }
+
+                        if (sitioElegido.equalsIgnoreCase("mapa")) {
+                            Jugador.verMapa();
+                        }
+                        break;
+
+                    case "lootear":
+                        if (haViajado == false) {
+                            System.out.println(Juego.ROJO + "Necesitas viajar a algun sitio primero");
+                        } else if (haViajado == true) {
+                            Jugador.lootear();
+                        }
+                        break;
+
+                    case "mochila":
+                        Jugador.verMochila();
+                        break;
+
+                    case "curar":
+                        Jugador.curar();
+                        break;
+
+                    case "info":
+                        Jugador.verStats();
+                        break;
+
+                    case "estado":
+                        Jugador.verEstado();
+                        break;
+
+                    default:
+                        System.out.println(Juego.ROJO + "El comando seleccionado no existe");
                         break;
                 }
 
-
-
-
-                
             }
         }
-        
+
     }
 }

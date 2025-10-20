@@ -1,17 +1,14 @@
 public class Estado {
     //cada uno de estos se aplica en base a cuantos puntos le queda al jugador.
     static int infectionCount = 0;
-    static int hipotermiaCount = 0;
-    static int insolacionCount = 0;
-    static int deshidratacionCount = 0;
-    static int inanicionCount = 0;
-
+    // ----------------------------------------------------------------------------------------
     static public void infeccion() {
         int chancesInfeccion = (int) (Math.random() * 10);
 
         if (chancesInfeccion > 6 && !Jugador.estado.equalsIgnoreCase("infectado")) {
             System.out.println(Juego.ROJO + "Te has infectado");
             Jugador.estado = "Infectado";
+            Estado.fiebre();
             System.out.println(Juego.ROJO + "-5 de vida por infeccion");
             Jugador.vida -= 5;
             Estado.infectionCount++;
@@ -28,103 +25,103 @@ public class Estado {
             System.exit(0);
         }
     }
+    // ----------------------------------------------------------------------------------------
 
     static public void hipotermia() {
-        if(Jugador.temperatura < 35){
+        if(Jugador.temperatura < 35 && Jugador.hipotermia == false){
+            System.out.println(Juego.ROJO + "tienes hipotermia. Busca refugio o enciende una fogata y permanece allí");
             Jugador.hipotermia = true;
+            Jugador.destreza -= 1;
         }
-
+        else if(Jugador.hipotermia == true){
+            Estado.fiebre();
+            System.out.println(Juego.ROJO + "-5 de vida por hipotermia");
+            Jugador.vida -= 5;
+        }
     }
+
+    // ----------------------------------------------------------------------------------------
 
     static public void insolacion() {
-        int chancesInfeccion = (int) (Math.random() * 10);
-
-        if (chancesInfeccion > 1 && !Jugador.estado.equalsIgnoreCase("infectado")) {
-            System.out.println(Juego.ROJO + "Te has infectado");
-            Jugador.estado = "Infectado";
-            System.out.println(Juego.ROJO + "-5 de vida por infeccion");
-            Jugador.vida -= 5;
-            Estado.infectionCount++;
+        if(Jugador.temperatura > 40 && Jugador.insolacion == false){
+            System.out.println(Juego.ROJO + "tienes insolacion. Busca refugio o toma liquidos para resistir");
+            Jugador.insolacion = true;
+            Jugador.voluntad -= 1;
         }
-        else if (Jugador.estado.equalsIgnoreCase("Infectado")) {
-            System.out.println(Juego.ROJO + "-5 de vida por infeccion");
+        else if(Jugador.insolacion == true){
+            Estado.fiebre();
+            System.out.println(Juego.ROJO + "-5 de vida por insolacion");
             Jugador.vida -= 5;
-            Estado.infectionCount++;
-        }
-
-        if (infectionCount == 15) {
-            System.out.println(Juego.ROJO + "GAME OVER: La infeccion te ha carcomido.");
-            Jugador.vida = 0;
-            System.exit(0);
+            Jugador.hidratacion -= 5;
         }
     }
+
+    // ----------------------------------------------------------------------------------------
 
     static public void deshidratacion() {
-        int chancesInfeccion = (int) (Math.random() * 10);
-
-        if (chancesInfeccion > 1 && !Jugador.estado.equalsIgnoreCase("infectado")) {
-            System.out.println(Juego.ROJO + "Te has infectado");
-            Jugador.estado = "Infectado";
-            System.out.println(Juego.ROJO + "-5 de vida por infeccion");
-            Jugador.vida -= 5;
-            Estado.infectionCount++;
+        if(Jugador.hidratacion < 40){
+            System.out.println("Estas ligeramente sediento, intenta tomar liquidos"); 
         }
-        else if (Jugador.estado.equalsIgnoreCase("Infectado")) {
-            System.out.println(Juego.ROJO + "-5 de vida por infeccion");
-            Jugador.vida -= 5;
-            Estado.infectionCount++;
+        else if(Jugador.hidratacion < 20 && Jugador.deshidratacion == false){
+            System.out.println(Juego.AMARILLO + "Tienes mucha sed y estas deshidratado. Considera tomar liquidos urgentemente");
+            Jugador.deshidratacion = true;
+            Jugador.destreza -= 3;
+            Jugador.resistencia -= 3;
         }
-
-        if (infectionCount == 15) {
-            System.out.println(Juego.ROJO + "GAME OVER: La infeccion te ha carcomido.");
-            Jugador.vida = 0;
-            System.exit(0);
+        else if(Jugador.hidratacion == 0 && Jugador.deshidratacion == true){
+            System.out.println(Juego.ROJO + "-5 de vida porque estas muriendo de sed");
+            Jugador.vida -= 5;
         }
     }
+
+    // ----------------------------------------------------------------------------------------
 
     static public void inanicion() {
-        int chancesInfeccion = (int) (Math.random() * 10);
-
-        if (chancesInfeccion > 1 && !Jugador.estado.equalsIgnoreCase("infectado")) {
-            System.out.println(Juego.ROJO + "Te has infectado");
-            Jugador.estado = "Infectado";
-            System.out.println(Juego.ROJO + "-5 de vida por infeccion");
-            Jugador.vida -= 5;
-            Estado.infectionCount++;
+        if(Jugador.nutricion < 40){
+            System.out.println("Estas ligeramente hambriento, intenta comer algo");
         }
-        else if (Jugador.estado.equalsIgnoreCase("Infectado")) {
-            System.out.println(Juego.ROJO + "-5 de vida por infeccion");
-            Jugador.vida -= 5;
-            Estado.infectionCount++;
+        else if(Jugador.nutricion < 20 && Jugador.inanicion == false){
+            System.out.println(Juego.AMARILLO + "Tienes mucha hambre y tienes sintomas de inanicion. Considera comer urgentemente");
+            Jugador.inanicion = true;
+            Jugador.destreza -= 3;
+            Jugador.resistencia -= 3;
         }
-
-        if (infectionCount == 15) {
-            System.out.println(Juego.ROJO + "GAME OVER: La infeccion te ha carcomido.");
-            Jugador.vida = 0;
-            System.exit(0);
+        else if(Jugador.nutricion == 0 && Jugador.inanicion == true){
+            System.out.println(Juego.ROJO + "-5 de vida porque estas muriendo de hambre");
+            Jugador.vida -= 5;
         }
     }
 
+    // ----------------------------------------------------------------------------------------
+
     static public void fiebre() {
-        int chancesInfeccion = (int) (Math.random() * 10);
-
-        if (chancesInfeccion > 1 && !Jugador.estado.equalsIgnoreCase("infectado")) {
-            System.out.println(Juego.ROJO + "Te has infectado");
-            Jugador.estado = "Infectado";
-            System.out.println(Juego.ROJO + "-5 de vida por infeccion");
-            Jugador.vida -= 5;
-            Estado.infectionCount++;
+        int chances = (int)(Math.random() * 10);
+        if(chances > 7 && Jugador.fiebre == false){
+            Jugador.fiebre = true;
+            Jugador.voluntad -= 3;
         }
-        else if (Jugador.estado.equalsIgnoreCase("Infectado")) {
-            System.out.println(Juego.ROJO + "-5 de vida por infeccion");
-            Jugador.vida -= 5;
-            Estado.infectionCount++;
-        }
+    }
 
-        if (infectionCount == 15) {
-            System.out.println(Juego.ROJO + "GAME OVER: La infeccion te ha carcomido.");
-            Jugador.vida = 0;
-            System.exit(0);
+    // ----------------------------------------------------------------------------------------
+
+    static public void radiacion() {
+        if(Jugador.radiacion == false){
+            Jugador.radiacion = true;
+            System.out.println(Juego.ROJO + "Te encuentras irradiado, busca pildoras contra la radiacion urgentemente");
+        }
+        else if(Jugador.radiacion == true){
+            System.out.println(Juego.ROJO + "-5 de vida por radiacion");
+            Jugador.vida -= 5;
+        }
+    }
+
+    // ----------------------------------------------------------------------------------------
+
+    static public void cansancio(){
+        if(Jugador.energia < 40 && Jugador.cansancio == false){
+            Jugador.cansancio = true; 
+            System.out.println("Te encuentras algo cansado, intenta descansar. Puedes buscar un refugio, usar un saco de dormir o intentar dormir al aire libre");
+            Jugador.destreza -= 1;
         }
     }
 }

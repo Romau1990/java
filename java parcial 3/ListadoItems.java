@@ -42,67 +42,72 @@ public class ListadoItems {
         }
 
         static public ObjItem randomItem() {
-                var cantidadItem = (int) ((Math.random() + 1) * 5);
-                var index = (int) (Math.random() * ListadoItems.todoElLoot.size());
-                Jugador.mochila.add(ListadoItems.todoElLoot.get(index));
-                ListadoItems.todoElLoot.get(index).cantidad = cantidadItem;
-                return ListadoItems.todoElLoot.get(index);
+                ObjItem o = ListadoItems.todoElLoot.get((int) (Math.random() * ListadoItems.todoElLoot.size()));
+                ObjItem copia = (o instanceof Item)
+                ? new Item(((Item) o).nombre, ((Item) o).nivel, ((Item) o).peso, ((Item) o).descripcion,
+                ((Item) o).proposito, ((Item) o).cantidadTurnos)
+                : new Arma(((Arma) o).nombre, ((Arma) o).nivel, ((Arma) o).dañoMin, ((Arma) o).dañoMax,
+                ((Arma) o).peso, ((Arma) o).durabilidad, ((Arma) o).descripcion,
+                ((Arma) o).tipoDaño, ((Arma) o).proposito, ((Arma) o).cantidadTurnos);
+                copia.cantidad = (int) ((Math.random() + 1) * 5);
+                Jugador.mochila.add(copia);
+                return copia;
         }
 
         static {
                 // === ARMAS ===
                 añadirArma(new Arma("Cuchillo", 1, 3, 6, 1, 100, "Cuchillo de cocina afilado.", "corte",
-                                new String[] { "arma", "recoleccion" }));
+                                new String[] { "arma", "recoleccion" },1));
                 añadirArma(new Arma("Hacha", 3, 5, 10, 5, 120, "Hacha de supervivencia pesada.", "corte",
-                                new String[] { "arma", "talar" }));
+                                new String[] { "arma", "talar" },1));
                 añadirArma(new Arma("Barra de metal", 2, 4, 8, 4, 150, "Barra sólida de metal oxidada.", "impacto",
-                                new String[] { "arma" }));
+                                new String[] { "arma" },1));
                 añadirArma(new Arma("Arco y flecha", 3, 6, 12, 3, 80, "Arco de madera con cuerdas tensadas.",
                                 "perforante",
-                                new String[] { "arma", "caceria" }));
+                                new String[] { "arma", "caceria" },1));
                 añadirArma(new Arma("Sartén", 1, 2, 5, 3, 200, "Sartén de hierro, ideal para golpear cabezas.",
                                 "impacto",
-                                new String[] { "arma", "cocina", "recipiente" }));
+                                new String[] { "arma", "cocina", "recipiente" },1));
                 añadirArma(new Arma("Pistola 9mm y balas", 4, 8, 14, 2, 90, "Pistola semiautomática con munición.",
                                 "perforante",
-                                new String[] { "arma", "caceria" }));
+                                new String[] { "arma", "caceria" },1));
                 añadirArma(new Arma("Llave de tuercas", 1, 3, 7, 3, 130, "Herramienta de metal resistente.", "impacto",
-                                new String[] { "arma", "desguace" }));
+                                new String[] { "arma", "desguace" },1));
                 añadirArma(new Arma("Nada", 1, 0, 0, 0, 0, "No tenés un arma equipada.", "ninguno",
-                                new String[] { "nada" }));
+                                new String[] { "nada" },1));
                 añadirArma(new Arma("Bisturí", 1, 2, 4, 1, 50, "Instrumento quirúrgico muy filoso.", "corte",
-                                new String[] { "arma", "recoleccion", "curar", "reparacion" }));
+                                new String[] { "arma", "recoleccion", "curar", "reparacion" },1));
                 añadirArma(new Arma("Destornillador", 1, 2, 5, 1, 80, "Destornillador común, útil y mortal.",
                                 "perforante",
-                                new String[] { "arma", "desguace", "reparacion" }));
+                                new String[] { "arma", "desguace", "reparacion" },1));
 
                 // === ITEMS ===
                 añadirItem(new Item("Vendaje", 1, 1, "Sirve para detener hemorragias leves.",
-                                new String[] { "curar" },1));
+                                new String[] { "curar" }, 1));
                 añadirItem(new Item("Carne cruda", 1, 2, "Carne sin cocinar, puede enfermarte.",
-                                new String[] { "arma", "recoleccion" },3));
+                                new String[] { "alimentacion"}, 3));
                 añadirItem(new Item("Botella de agua", 1, 1, "Agua limpia para hidratarte.",
-                                new String[] { "hidratacion", "recipiente" },0));
+                                new String[] { "hidratacion", "recipiente" }, 0));
                 añadirItem(new Item("Chatarra", 1, 3, "Restos metálicos, útiles para reparar cosas.",
-                                new String[] { "reparacion", "creacion" },0));
+                                new String[] { "reparacion", "creacion" }, 0));
                 añadirItem(new Item("Electronicos", 1, 2, "Piezas electrónicas para fabricar o reparar.",
-                                new String[] { "reparacion", "creacion" },0));
+                                new String[] { "reparacion", "creacion" }, 0));
                 añadirItem(new Item("Fosforos", 1, 1, "Caja con fósforos secos.",
-                                new String[] { "encender", "cocinar", "iluminar" },1));
+                                new String[] { "encender", "cocinar", "iluminar" }, 1));
                 añadirItem(new Item("Linterna", 1, 2, "Linterna de mano para iluminar.",
-                                new String[] { "iluminar" },0));
+                                new String[] { "iluminar" }, 0));
                 añadirItem(new Item("Sobre de dormir", 1, 3, "Permite descansar y recuperar energía.",
-                                new String[] { "descansar", "abrigar" },2));
+                                new String[] { "descansar", "abrigar" }, 2));
                 añadirItem(new Item("Fuegos artificiales", 1, 2, "Sirven para distraer enemigos o iluminar.",
-                                new String[] { "arma", "recoleccion" },1));
+                                new String[] { "distraer" }, 1));
                 añadirItem(new Item("Antibioticos", 1, 1, "Curan infecciones o enfermedades leves.",
-                                new String[] { "antibiotico" },0));
+                                new String[] { "antibiotico" }, 0));
                 añadirItem(new Item("Garzúa", 1, 1, "Herramienta para forzar cerraduras.",
-                                new String[] { "abrir" },3));
+                                new String[] { "abrir" }, 3));
                 añadirItem(new Item("madera", 1, 2, "Sirve para reparar y construir",
-                                new String[] { "reparacion", "creacion" },0));
+                                new String[] { "reparacion", "creacion" }, 0));
                 añadirItem(new Item("carne enlatada", 1, 2, "Alimento no muy sabroso pero quita el hambre",
-                                new String[] { "alimentacion", "recipiente" },2));
+                                new String[] { "alimentacion", "recipiente" }, 2));
 
         }
 

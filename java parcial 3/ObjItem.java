@@ -9,14 +9,16 @@ public abstract class ObjItem {
     String descripcion;
     int cantidad;
     String[] proposito;
+    int cantidadTurnos; 
 
-    public ObjItem(String nombre, int nivel, int peso, String descripcion, String proposito[]) {
+    public ObjItem(String nombre, int nivel, int peso, String descripcion, String proposito[], int cantidadTurnos) {
         this.nombre = nombre;
         this.nivel = nivel;
         this.peso = peso;
         this.descripcion = descripcion;
         this.proposito = proposito;
         this.cantidad = 0;
+        this.cantidadTurnos = cantidadTurnos; 
     }
 
     public String getNombre() {
@@ -41,6 +43,13 @@ public abstract class ObjItem {
 
     public String[] getProposito() {
         return this.proposito;
+        
+    }
+
+    public void getP() {
+        for(String purpose : this.proposito){
+            System.out.println(purpose);
+        }
     }
 
     public void verInfo() {
@@ -62,11 +71,14 @@ public abstract class ObjItem {
     class Item extends ObjItem {
         int cantidadTurnos;
         public Item(String nombre, int nivel, int peso, String descripcion, String proposito[], int cantidadTurnos) {
-            super(nombre, nivel, peso, descripcion, proposito);
+            super(nombre, nivel, peso, descripcion, proposito, cantidadTurnos);
             this.cantidadTurnos = cantidadTurnos;
         }
         public void getTurnos(){
             System.out.println(this.cantidadTurnos);
+        }
+        public int turnos(){
+            return this.cantidadTurnos;
         }
     }
 
@@ -75,14 +87,14 @@ class Arma extends ObjItem {
     int dañoMin;
     int dañoMax;
     String tipoDaño;
-
+    int cantidadTurnos;
     public Arma(String nombre, int nivel, int dañoMin, int dañoMax, int peso, int durabilidad, String descripcion,
-            String tipoDaño, String proposito[]) {
-        super(nombre,nivel, peso, descripcion, proposito);
+            String tipoDaño, String proposito[], int cantidadTurnos) {
+        super(nombre,nivel, peso, descripcion, proposito, cantidadTurnos);
         this.dañoMin = dañoMin;
         this.dañoMax = dañoMax;
         this.tipoDaño = tipoDaño;
-        
+        this.cantidadTurnos = cantidadTurnos;
     }
 
     public void verInfo() {

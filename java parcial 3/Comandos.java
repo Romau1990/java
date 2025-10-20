@@ -1,6 +1,8 @@
 public class Comandos {
     static void verComandos() {
         System.out.println("==== MENU DE COMANDOS ====");
+        System.out.println("mapa -> ve todos los sitios disponibles para viajar");
+        System.out.println("viajar -> viajar a un sitio del mapa elegido");
         System.out.println("el [] establece que debes usar el nombre del item");
         System.out.println("salir -> abandonar partida");
         System.out.println("lootear -> rebuscar items");
