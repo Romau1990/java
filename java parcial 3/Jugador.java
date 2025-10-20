@@ -107,6 +107,7 @@ public class Jugador {
     }
 
     static void lootear() {
+        Estado.riesgoDeArea(Jugador.areaActual);
         System.out.println("Has obtenido:");
         Jugador.incrementarTurno(1);
         ListadoItems.randomItem().basicInfo();

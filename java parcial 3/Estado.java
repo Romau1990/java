@@ -124,4 +124,63 @@ public class Estado {
             Jugador.destreza -= 1;
         }
     }
+
+    static public void riesgoDeArea(String area){
+        switch (area) {
+            case "casa":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "ciudad":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "playa":
+                Jugador.hidratacion -= 2;
+                Jugador.energia -= 2;
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "colina":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "basurero":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                Estado.infeccion();
+                break;
+
+            case "bosque":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "sitio en construccion":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "caverna":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "campo":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "tienda":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "iglesia":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "caravana":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "puente":
+                // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+        }
+    }
 }
