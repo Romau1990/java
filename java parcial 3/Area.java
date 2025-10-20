@@ -27,6 +27,8 @@ public class Area {
                 break;
 
             case "playa":
+                Jugador.hidratacion -= 2;
+                Jugador.energia -= 2;
                 // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
                 break;
 

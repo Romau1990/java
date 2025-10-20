@@ -82,7 +82,7 @@ public class Juego {
 
                 // opciones estaticas de menu (se mostrarán siempre como ayuda memoria para el
                 // jugador)
-                System.out.println(Juego.BLANCO +
+                System.out.println(Juego.CYAN +
                         "=== MENU ====================================================================================================== ");
                 System.out.println("turno: " + Jugador.getTurno() + " ----------" + " nombre: " + nombreJugador
                         + " ----------" + " dinero: " + Jugador.dinero + "---------- " + "vida: " + Jugador.vida);
@@ -177,10 +177,18 @@ public class Juego {
 
                     case "info":
                         Jugador.verStats();
+                        Jugador.verEstado();
                         break;
 
                     case "estado":
-                        Jugador.verEstado();
+                        Jugador.estadoActual();
+                        break;
+                    
+                    case "descansar": 
+                        System.out.println("cuantas horas quieres descansar? Cada hora descansada equivale a un turno. Ten en cuenta eso. Pon 0 para cancelar");
+                        int horas = game.nextInt();
+                        game.nextLine();
+                        Jugador.descansar(horas);
                         break;
 
                     default:

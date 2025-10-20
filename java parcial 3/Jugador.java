@@ -5,6 +5,7 @@ import java.util.*;
 public class Jugador {
 
     static ArrayList<ObjItem> mochila = new ArrayList<>();
+    static String areaActual = "";
     static String nombre;
     static int dinero = 10;
     static int turno = 0;
@@ -31,7 +32,6 @@ public class Jugador {
     static Boolean fiebre = false;
     static String estado = "Sano";
 
-
     static public void verEstado() {
         System.out.println("------------ estado de" + Jugador.nombre + "------------");
         System.out.println("radiacion: " + Jugador.radiacion);
@@ -57,12 +57,16 @@ public class Jugador {
     }
 
     static public int incrementarTurno(int turno) {
+        nutricion -= 5;
+        hidratacion -= 5;
+        energia -= 5;
+        temperatura = 36;
         return Jugador.turno += turno;
     }
 
     static public void verStats() {
-        System.out.println("--------" + Jugador.nombre + "stats " + "--------");
-        System.out.println("--------" + Jugador.dinero + "stats " + "--------");
+        System.out.println("-------- " + Jugador.nombre + "stats " + " --------");
+        System.out.println("-------- " + Jugador.dinero + "stats " + " --------");
         System.out.println("Turno: " + Jugador.turno);
         System.out.println(String.format(
                 "nombre: %s \nnivel: %d \nfuerza: %d \nresistencia: %d \npersepcion: %d \ningenio: %d \nvoluntad: %d \ndestreza: %d \nvida: %d",
@@ -71,7 +75,7 @@ public class Jugador {
     }
 
     static public void estadoActual() {
-        System.out.println("------" + "estado de " + Jugador.nombre + "------");
+        System.out.println("------ " + "estado de " + Jugador.nombre + " ------");
         System.out.println(String.format(
                 "vida: %d \nnutricion: %d \nhidratacion: %d \nenergia: %d \ntemperatura: %d \nestado: %s", Jugador.vida,
                 Jugador.nutricion, Jugador.hidratacion, Jugador.energia, Jugador.temperatura, Jugador.estado));
@@ -104,6 +108,7 @@ public class Jugador {
 
     static void lootear() {
         System.out.println("Has obtenido:");
+        Jugador.incrementarTurno(1);
         ListadoItems.randomItem().basicInfo();
     }
 
@@ -126,6 +131,7 @@ public class Jugador {
                 }
                 System.out.println("Has llegado a: " + area);
                 Area.areaSeleccionada(area);
+                Jugador.areaActual = area;
                 System.out.println(Juego.BLANCO + "Que harás ahora " + Jugador.nombre + "?");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -170,6 +176,17 @@ public class Jugador {
         // for(ObjItem obj : Jugador.mochila){
         // System.out.println(obj.getDescription());
         // }
+    }
+
+    static void descansar(int hs){
+        
+        if(hs > Jugador.energia){
+            Jugador.energia = 100; 
+            int tiempoDescanso = hs -= Jugador.energia;
+            System.out.println("Descansaste " + tiempoDescanso + " hs. Tu energía esta al máximo");
+        }
+        Jugador.energia += (10 * hs); 
+        Jugador.incrementarTurno(hs);
     }
 
     static void equipar(String weapon) {
