@@ -45,7 +45,8 @@ public class Juego {
 
             Scanner game = new Scanner(System.in);
 
-            // pide el nombre del jugador
+            // pide el nombre del jugador =========================================================================================
+
             String nombreJugador = JOptionPane.showInputDialog("Cual es tu nombre?");
             if (nombreJugador == null || nombreJugador.isBlank()) {
                 while (nombreJugador == null || nombreJugador.isBlank()) {
@@ -55,14 +56,13 @@ public class Juego {
                 Jugador.nombre(nombreJugador);
             }
 
-            // INTRO DEL
-            // JUEGO_______________________________________________________________
+            // items iniciales agregados automaticamente a la mochila del personaje ===============================================
 
-            // items iniciales agregados automaticamente a la mochila del personaje.
             ListadoItems.darArma();
             ListadoItems.darItem();
 
-            // Consejos rápidos antes de iniciar la partida
+            // Consejos rápidos antes de iniciar la partida =======================================================================
+
             System.out.println(
                     "========================================================================================================= ");
             System.out.println(
@@ -72,39 +72,44 @@ public class Juego {
             Jugador.verMochila();
             System.out.println("----------------------");
 
-            // BUCLE DEL
-            // JUEGO_______________________________________________________________________
-
+            // variables del juego ==================================================================
+            Area.estacionRandom();
+            Area.rollearClima();
+            Area.rollearTemp();
             Boolean estadoJuego = true;
             Boolean haViajado = false;
+            int contadorEstacion = 0;
+
+            // Bucle del juego ======================================================================
 
             while (true) {
 
-                // opciones estaticas de menu (se mostrarán siempre como ayuda memoria para el
-                // jugador)
+                if (contadorEstacion == 10) {
+                    Area.rollearEstacion();
+                    Area.rollearClima();
+                    Area.rollearTemp();
+                    contadorEstacion = 0;
+                }
+                // opciones estaticas de menu (se mostrarán siempre como ayuda memoria para el jugador ===========================================================
                 System.out.println(Juego.CYAN +
-                        "=== MENU ====================================================================================================== ");
+                        "=== MENU ============================================================================================================================= ");
                 System.out.println("turno: " + Jugador.getTurno() + " ----------" + " nombre: " + nombreJugador
-                        + " ----------" + " dinero: " + Jugador.dinero + "---------- " + "vida: " + Jugador.vida);
-                System.out.print("ver comandos -> comandos ----------");
+                        + " ----------" + " dinero: " + Jugador.dinero + " ---------- " + "vida: " + Jugador.vida
+                        + " ---------- " + "area: " + Jugador.areaActual);
+                System.out.println("Estacion: " + Area.estacion + " ---------- " + "Clima: " + Area.clima
+                        + " ---------- " + "temperatura: " + Area.temperatura);
+                System.out.print("Ver comandos -> comandos ----------");
                 System.out.println("salir del juego-> salir |");
                 System.out.println(
-                        "===============================================================================================================");
+                        "====================================================================================================================================");
 
                 // en accion tomada, además de salir iniciar podría usar esta instancia
                 // paradescansar, curarme, etc.
+
                 System.out.println(Juego.BLANCO + "¿Que harás ahora?");
                 System.out.println(
                         "----------------------------------------------------------------------------------------------------------------");
                 var accionTomada = game.nextLine().toLowerCase();
-
-                if (accionTomada.equalsIgnoreCase("comandos")) {
-                    Comandos.verComandos();
-                } else if (accionTomada.equalsIgnoreCase("salir")) {
-                    JOptionPane.showMessageDialog(null, "has abandonado la partida");
-                    estadoJuego = false;
-                    System.exit(0);
-                }
 
                 // trozo de lógica que permite reconocer ciertos comandos con más de una palabra
                 String[] partes = accionTomada.split(" ", 2);
@@ -125,11 +130,17 @@ public class Juego {
                         Jugador.verMapa();
                         break;
 
+                    case "salir":
+                        JOptionPane.showMessageDialog(null, "has abandonado la partida");
+                        estadoJuego = false;
+                        System.exit(0);
+                        break;
+
                     case "viajar":
                         // seleccion de area
                         System.out.println(
                                 "----------------------------------------------------------------------------------------------------------------");
-                        System.out.println("A donde quieres ir? Si no estas seguro puedes ver el mapa");
+                        System.out.println(Juego.BLANCO + "A donde quieres ir? Si no estas seguro puedes ver el mapa");
                         System.out.println(
                                 "----------------------------------------------------------------------------------------------------------------");
                         String sitioElegido = game.nextLine().trim();
@@ -157,6 +168,7 @@ public class Juego {
                         if (sitioElegido.equalsIgnoreCase("mapa")) {
                             Jugador.verMapa();
                         }
+                        contadorEstacion++;
                         break;
 
                     case "lootear":
@@ -183,12 +195,17 @@ public class Juego {
                     case "estado":
                         Jugador.estadoActual();
                         break;
-                    
-                    case "descansar": 
-                        System.out.println("cuantas horas quieres descansar? Cada hora descansada equivale a un turno. Ten en cuenta eso. Pon 0 para cancelar");
+
+                    case "descansar":
+                        System.out.println(
+                                "cuantas horas quieres descansar? Cada hora descansada equivale a un turno. Ten en cuenta eso. Pon 0 para cancelar");
                         int horas = game.nextInt();
                         game.nextLine();
                         Jugador.descansar(horas);
+                        break;
+
+                    case "comandos":
+                        Comandos.verComandos();
                         break;
 
                     default:

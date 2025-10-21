@@ -1,6 +1,6 @@
 public class Comandos {
     static void verComandos() {
-        System.out.println("==== MENU DE COMANDOS ====");
+        System.out.println("==== MENU DE COMANDOS ================================");
         System.out.println("mapa -> ve todos los sitios disponibles para viajar");
         System.out.println("viajar -> viajar a un sitio del mapa elegido");
         System.out.println("el [] establece que debes usar el nombre del item");
@@ -12,6 +12,6 @@ public class Comandos {
         System.out.println("estado actual -> ver la condicion de salud actual de tu personaje");
         System.out.println("ver stats -> ver las estadisticas de tu personaje");
         System.out.println("equipar [item] -> preparar un arma especifica");
-        System.out.println("----------------------");
+        System.out.println("=================================================================");
     }
 }

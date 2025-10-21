@@ -5,7 +5,7 @@ import java.util.*;
 public class Jugador {
 
     static ArrayList<ObjItem> mochila = new ArrayList<>();
-    static String areaActual = "";
+    static String areaActual = "campamento";
     static String nombre;
     static int dinero = 10;
     static int turno = 0;
@@ -22,6 +22,7 @@ public class Jugador {
     static int hidratacion = 100;
     static int energia = 100;
     static int temperatura = 36;
+    static int contadorQuemadura = 0;
 
     static Boolean radiacion = false;
     static Boolean inanicion = false;
@@ -30,7 +31,16 @@ public class Jugador {
     static Boolean hipotermia = false;
     static Boolean insolacion = false;
     static Boolean fiebre = false;
+    static Boolean quemaduras = false;
     static String estado = "Sano";
+
+
+    static{
+        if(Jugador.vida <= 0){
+            Jugador.vida = 0; 
+            System.out.println(Juego.ROJO + "Estas muerto has sobrevivido " + Jugador.turno + " turnos");
+        }
+    }
 
     static public void verEstado() {
         System.out.println("------------ estado de" + Jugador.nombre + "------------");
@@ -41,6 +51,7 @@ public class Jugador {
         System.out.println("hipotermia: " + Jugador.hipotermia);
         System.out.println("insolacion: " + Jugador.insolacion);
         System.out.println("fiebre: " + Jugador.fiebre);
+        System.out.println("fiebre: " + Jugador.quemaduras);
         System.out.println("----------------------------------------------------");
     }
 
@@ -57,9 +68,9 @@ public class Jugador {
     }
 
     static public int incrementarTurno(int turno) {
-        nutricion -= 5;
-        hidratacion -= 5;
-        energia -= 5;
+        nutricion -= (5 * turno);
+        hidratacion -= (5 * turno);
+        energia -= (5 * turno);
         temperatura = 36;
         return Jugador.turno += turno;
     }
@@ -107,7 +118,7 @@ public class Jugador {
     }
 
     static void lootear() {
-        Estado.riesgoDeArea(Jugador.areaActual);
+        Area.areaSeleccionada(Jugador.areaActual);
         System.out.println("Has obtenido:");
         Jugador.incrementarTurno(1);
         ListadoItems.randomItem().basicInfo();
@@ -180,14 +191,19 @@ public class Jugador {
     }
 
     static void descansar(int hs){
-        
-        if(hs > Jugador.energia){
-            Jugador.energia = 100; 
-            int tiempoDescanso = hs -= Jugador.energia;
-            System.out.println("Descansaste " + tiempoDescanso + " hs. Tu energía esta al máximo");
-        }
-        Jugador.energia += (10 * hs); 
         Jugador.incrementarTurno(hs);
+        int energiaObtenida = hs * 10;
+        if(energiaObtenida > Jugador.energia){
+            System.out.println("Descansaste " + hs + " hs. Tu energía esta al máximo");
+            System.out.println(Juego.VERDE + "Energia " + (100 - Jugador.energia));
+            Jugador.energia = 100; 
+        }
+        else{
+           System.out.println("Descansaste " + hs + " hs. Tu energía a incrementado"); 
+           System.out.println(Juego.VERDE + "Energia " + (10 * hs)); 
+           Jugador.energia += (10 * hs); 
+        }
+        
     }
 
     static void equipar(String weapon) {
@@ -213,5 +229,6 @@ public class Jugador {
     static void soltar(String item) {
         Jugador.mochila.removeIf(obj -> obj.getNombre().equalsIgnoreCase(item));
     }
+
 
 }
