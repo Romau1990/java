@@ -177,7 +177,6 @@ public class Juego {
                         if (haViajado == false) {
                             System.out.println(Juego.ROJO + "Necesitas viajar a algun sitio primero");
                         } else if (haViajado == true) {
-                            Jugador.calcularPeso();
                             Jugador.lootear();
                         }
                         break;
@@ -216,6 +215,14 @@ public class Juego {
 
                     case "comandos":
                         Comandos.verComandos();
+                        break;
+                    
+                    case "beber":
+                        Jugador.beber();
+                        break;
+                    
+                    case "comer":
+                        Jugador.comer();
                         break;
 
                     default:

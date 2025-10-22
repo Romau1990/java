@@ -9,7 +9,8 @@ public abstract class ObjItem {
     String descripcion;
     int cantidad;
     String[] proposito;
-    int cantidadTurnos; 
+    int cantidadTurnos;
+
 
     public ObjItem(String nombre, int nivel, int peso, String descripcion, String proposito[], int cantidadTurnos) {
         this.nombre = nombre;
@@ -17,8 +18,8 @@ public abstract class ObjItem {
         this.peso = peso;
         this.descripcion = descripcion;
         this.proposito = proposito;
-        this.cantidad = 0;
-        this.cantidadTurnos = cantidadTurnos; 
+        this.cantidad = 1;
+        this.cantidadTurnos = cantidadTurnos;
     }
 
     public String getNombre() {
@@ -43,14 +44,15 @@ public abstract class ObjItem {
 
     public String[] getProposito() {
         return this.proposito;
-        
+
     }
 
     public void getP() {
-        for(String purpose : this.proposito){
+        for (String purpose : this.proposito) {
             System.out.println(purpose);
         }
     }
+
 
     public void verInfo() {
         System.out.println("------------" + this.nombre + "---------------");
@@ -63,24 +65,28 @@ public abstract class ObjItem {
     }
 
     public void basicInfo() {
-        System.out.println(this.nombre + " "+this.nivel+ " x" + this.cantidad);
+        System.out.println(this.nombre + " x" + this.cantidad);
     }
+
 }
 
+class Item extends ObjItem {
+    int cantidadTurnos;
+    int cantidad = 1;
 
-    class Item extends ObjItem {
-        int cantidadTurnos;
-        public Item(String nombre, int nivel, int peso, String descripcion, String proposito[], int cantidadTurnos) {
-            super(nombre, nivel, peso, descripcion, proposito, cantidadTurnos);
-            this.cantidadTurnos = cantidadTurnos;
-        }
-        public void getTurnos(){
-            System.out.println(this.cantidadTurnos);
-        }
-        public int turnos(){
-            return this.cantidadTurnos;
-        }
+    public Item(String nombre, int nivel, int peso, String descripcion, String proposito[], int cantidadTurnos) {
+        super(nombre, nivel, peso, descripcion, proposito, cantidadTurnos);
+        this.cantidadTurnos = cantidadTurnos;
     }
+
+    public void getTurnos() {
+        System.out.println(this.cantidadTurnos);
+    }
+
+    public int turnos() {
+        return this.cantidadTurnos;
+    }
+}
 
 // Clase Arma con atributos de daño
 class Arma extends ObjItem {
@@ -88,9 +94,11 @@ class Arma extends ObjItem {
     int dañoMax;
     String tipoDaño;
     int cantidadTurnos;
+    int cantidad = 1;
+
     public Arma(String nombre, int nivel, int dañoMin, int dañoMax, int peso, int durabilidad, String descripcion,
             String tipoDaño, String proposito[], int cantidadTurnos) {
-        super(nombre,nivel, peso, descripcion, proposito, cantidadTurnos);
+        super(nombre, nivel, peso, descripcion, proposito, cantidadTurnos);
         this.dañoMin = dañoMin;
         this.dañoMax = dañoMax;
         this.tipoDaño = tipoDaño;

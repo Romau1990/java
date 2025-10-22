@@ -10,6 +10,7 @@ public class Jugador {
     static int dinero = 10;
     static int turno = 0;
     static int nivel = 1;
+    static int exp = 0; // experiencia se ganará en combate
     static int pesoTotalItems;
     static int pesoMaximo = 10;
     static int espacioDisponible = (pesoMaximo - pesoTotalItems);
@@ -26,6 +27,10 @@ public class Jugador {
     static int energia = 100;
     static int temperatura = 36;
     static int contadorQuemadura = 0;
+    static int exitoCrafteo = 50;
+    static int exitoPunteria = 50;
+    static int defensaGeneral = 5;
+    static int defensaVestimenta = 0;
 
     static Boolean radiacion = false;
     static Boolean inanicion = false;
@@ -44,10 +49,58 @@ public class Jugador {
         }
     }
 
-    static public void calcularPeso() {
-        if (Jugador.pesoTotalItems >= Jugador.pesoMaximo) {
-            System.out.println(Juego.ROJO + "No puedes cargar más peso");
+    // static public void calcularPeso() {
+    //     if (Jugador.pesoTotalItems >= Jugador.pesoMaximo) {
+    //         System.out.println(Juego.ROJO + "No puedes cargar más peso. Descarta algo de tu mochila usando el comando -> dejar");
+    //     }
+    // }
+
+    static public void ganarExp(int expGanada) {
+        if (Jugador.exp >= 10) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println(Juego.VERDE + "Has subido de nivel. Tienes 1 punto disponible");
+            System.out.println("Puedes elegir un atributo para mejorar. Escribe el nombre del atributo para mejorarlo");
+            String atributo = scanner.nextLine().trim().toLowerCase();
+            Jugador.vida += 10;
+
+            switch (atributo) {
+                case "fuerza":
+                    Jugador.fuerza++;
+                    Jugador.pesoMaximo += 2;
+                    break;
+                case "resistencia":
+                    Jugador.resistencia++;
+                    Jugador.energia += 5;
+                    break;
+                case "percepcion":
+                    Jugador.percepcion++;
+                    Jugador.exitoPunteria += 5;
+                    break;
+                case "ingenio":
+                    Jugador.ingenio++;
+                    Jugador.exitoCrafteo += 5;
+                    break;
+                case "voluntad":
+                    Jugador.voluntad++;
+                    Jugador.defensaGeneral += 2;
+            }
+            Jugador.exp = 0;
+        } else {
+            System.out.println("Has ganado " + expGanada + " de experiencia");
+            Jugador.exp += expGanada;
         }
+    }
+
+    static public void mejorarAtributo() {
+        System.out.println("------------ estado de" + Jugador.nombre + "------------");
+        System.out.println("fuerza: " + Jugador.fuerza + " (+) - aumenta capacidad de carga");
+        System.out.println("resistencia: " + Jugador.resistencia
+                + " (+) - permite huir de combates con mayor efectividad y más energía");
+        System.out.println("destreza: " + Jugador.destreza + " (+) - mejores chances de esquivar ataques");
+        System.out.println("percepcion: " + Jugador.percepcion + " (+) - mejor y más loot");
+        System.out.println("ingenio: " + Jugador.ingenio + " (+) - mejor crafteo");
+        System.out.println("voluntad: " + Jugador.voluntad + " (+) - mayor resistencia al daño y efectos secundarios");
+        System.out.println("----------------------------------------------------");
     }
 
     static public void verEstado() {
@@ -125,19 +178,67 @@ public class Jugador {
         verMochila(false);
     }
 
+    
     static void lootear() {
-        int item = ListadoItems.randomItem().getPeso();
 
-        if (Jugador.pesoTotalItems >= Jugador.pesoMaximo || item > Jugador.espacioDisponible) {
-            System.out.println(Juego.ROJO + "No puedes cargar más peso. Descarta algo de tu mochila usando el comando -> dejar");
-        } else {
+        ObjItem itemObtenido = ListadoItems.randomItem();
+        int itemPeso = itemObtenido.getPeso();
+        int ganaDinero = (int) (Math.random() * 10);
+
+
+        int espacioDisponible = Jugador.pesoMaximo - Jugador.pesoTotalItems;
+
+        
+        
+        if (Jugador.pesoTotalItems >= Jugador.pesoMaximo || itemPeso > espacioDisponible) {
+            System.out.println(Juego.ROJO+"No puedes cargar más peso. Descarta algo de tu mochila usando el comando -> dejar");
+            
+        }
+        else{
+            
             Area.areaSeleccionada(Jugador.areaActual);
             System.out.println(Juego.BLANCO + "Has obtenido:");
             Jugador.incrementarTurno(1);
-            ListadoItems.randomItem().basicInfo();
-            Jugador.pesoTotalItems += ListadoItems.randomItem().getPeso();
+
+
+            boolean yaLoTenia = false;
+
+
+            if (itemObtenido instanceof Item) {
+
+                for (ObjItem itemEnMochila : Jugador.mochila) {
+
+                    if (itemEnMochila instanceof Item
+                            && itemEnMochila.getNombre().equalsIgnoreCase(itemObtenido.getNombre())) {
+                        itemEnMochila.cantidad++; // ...aumentamos la cantidad del item que YA teníamos
+                        yaLoTenia = true;
+                        break; // Salimos del bucle, ya terminamos
+                    }
+                }
+            }
+
+
+            if (yaLoTenia == false) {
+                Jugador.mochila.add(itemObtenido);
+            }
+
+            Jugador.pesoTotalItems += itemPeso;
+
+
+            if (yaLoTenia) {
+                System.out.println(itemObtenido.getNombre() + " (x1)");
+            } else {
+                itemObtenido.basicInfo(); // Muestra la info completa si es la primera vez
+            }
         }
 
+
+        // Lógica del dinero (esto estaba bien)
+        if (ganaDinero >= 8) {
+            int cantidadDinero = (int) (Math.random() * 10);
+            System.out.println(Juego.BLANCO + "Has conseguido " + "$" + cantidadDinero);
+            Jugador.dinero += cantidadDinero;
+        }
     }
 
     static void verMapa() {
@@ -170,10 +271,19 @@ public class Jugador {
     static void recargar() {
     }
 
-    static void dejar(String itemElegido){
+    static void dejar(String itemElegido) {
+
+        Jugador.mochila.forEach(item -> {
+            if (itemElegido.trim().equalsIgnoreCase(item.getNombre())) {
+                item.cantidad--;
+                Jugador.pesoTotalItems -= item.getPeso();
+            }
+            else if(Jugador.pesoTotalItems < 0){
+                Jugador.pesoTotalItems = 0;
+            }
+        });
         Jugador.mochila.removeIf(item -> {
-            Jugador.espacioDisponible += item.getPeso();
-            return item.getNombre().equalsIgnoreCase(itemElegido.trim());
+            return item.cantidad == 0;
         });
     }
 
@@ -228,6 +338,7 @@ public class Jugador {
 
     }
 
+
     static void equipar(String weapon) {
         boolean encontrado = false;
 
@@ -248,5 +359,24 @@ public class Jugador {
         }
     }
 
+    static void beber(){
+        System.out.println("Que items quieres usar?");
+        List<ObjItem> filtrados = Jugador.mochila.stream().filter(item ->
+            Arrays.asList(item.getProposito()).contains("hidratacion")
+        ).toList();
+        if(filtrados.isEmpty()){
+            System.out.println("No tienes items para usar");
+        }
+    }
+
+    static void comer(){
+        System.out.println("Que deseas comer?");
+        List<ObjItem> filtrado = Jugador.mochila.stream().filter(item ->
+            Arrays.asList(item.getProposito()).contains("alimentacion")
+        ).toList();
+        if(filtrado.isEmpty()){
+            System.out.println("No tienes items para usar");
+        }
+    }
 
 }
