@@ -49,7 +49,7 @@ public class ListadoItems {
                 : new Arma(((Arma) o).nombre, ((Arma) o).nivel, ((Arma) o).dañoMin, ((Arma) o).dañoMax,
                 ((Arma) o).peso, ((Arma) o).durabilidad, ((Arma) o).descripcion,
                 ((Arma) o).tipoDaño, ((Arma) o).proposito, ((Arma) o).cantidadTurnos);
-                copia.cantidad = (int) ((Math.random() + 1) * 5);
+                copia.cantidad = (int) ((Math.random() + 1) * 2);
                 Jugador.mochila.add(copia);
                 return copia;
         }

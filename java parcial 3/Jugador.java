@@ -10,6 +10,9 @@ public class Jugador {
     static int dinero = 10;
     static int turno = 0;
     static int nivel = 1;
+    static int pesoTotalItems;
+    static int pesoMaximo = 10;
+    static int espacioDisponible = (pesoMaximo - pesoTotalItems);
     static int fuerza = 5; // permite cargar más en la mochila
     static int resistencia = 5; // permite huir y moverte mas veces en un mismo turno
     static int percepcion = 5; // permite enconrar más y mejor loot
@@ -34,11 +37,16 @@ public class Jugador {
     static Boolean quemaduras = false;
     static String estado = "Sano";
 
-
-    static{
-        if(Jugador.vida <= 0){
-            Jugador.vida = 0; 
+    static public void calcularVida() {
+        if (Jugador.vida <= 0) {
+            Jugador.vida = 0;
             System.out.println(Juego.ROJO + "Estas muerto has sobrevivido " + Jugador.turno + " turnos");
+        }
+    }
+
+    static public void calcularPeso() {
+        if (Jugador.pesoTotalItems >= Jugador.pesoMaximo) {
+            System.out.println(Juego.ROJO + "No puedes cargar más peso");
         }
     }
 
@@ -118,10 +126,18 @@ public class Jugador {
     }
 
     static void lootear() {
-        Area.areaSeleccionada(Jugador.areaActual);
-        System.out.println("Has obtenido:");
-        Jugador.incrementarTurno(1);
-        ListadoItems.randomItem().basicInfo();
+        int item = ListadoItems.randomItem().getPeso();
+
+        if (Jugador.pesoTotalItems >= Jugador.pesoMaximo || item > Jugador.espacioDisponible) {
+            System.out.println(Juego.ROJO + "No puedes cargar más peso. Descarta algo de tu mochila usando el comando -> dejar");
+        } else {
+            Area.areaSeleccionada(Jugador.areaActual);
+            System.out.println(Juego.BLANCO + "Has obtenido:");
+            Jugador.incrementarTurno(1);
+            ListadoItems.randomItem().basicInfo();
+            Jugador.pesoTotalItems += ListadoItems.randomItem().getPeso();
+        }
+
     }
 
     static void verMapa() {
@@ -152,6 +168,13 @@ public class Jugador {
     }
 
     static void recargar() {
+    }
+
+    static void dejar(String itemElegido){
+        Jugador.mochila.removeIf(item -> {
+            Jugador.espacioDisponible += item.getPeso();
+            return item.getNombre().equalsIgnoreCase(itemElegido.trim());
+        });
     }
 
     static void curar() {
@@ -190,20 +213,19 @@ public class Jugador {
         // }
     }
 
-    static void descansar(int hs){
+    static void descansar(int hs) {
         Jugador.incrementarTurno(hs);
         int energiaObtenida = hs * 10;
-        if(energiaObtenida > Jugador.energia){
+        if (energiaObtenida > Jugador.energia) {
             System.out.println("Descansaste " + hs + " hs. Tu energía esta al máximo");
             System.out.println(Juego.VERDE + "Energia " + (100 - Jugador.energia));
-            Jugador.energia = 100; 
+            Jugador.energia = 100;
+        } else {
+            System.out.println("Descansaste " + hs + " hs. Tu energía a incrementado");
+            System.out.println(Juego.VERDE + "Energia " + (10 * hs));
+            Jugador.energia += (10 * hs);
         }
-        else{
-           System.out.println("Descansaste " + hs + " hs. Tu energía a incrementado"); 
-           System.out.println(Juego.VERDE + "Energia " + (10 * hs)); 
-           Jugador.energia += (10 * hs); 
-        }
-        
+
     }
 
     static void equipar(String weapon) {
@@ -224,10 +246,6 @@ public class Jugador {
         if (!encontrado) {
             System.out.println("No puedes equipar este objeto");
         }
-    }
-
-    static void soltar(String item) {
-        Jugador.mochila.removeIf(obj -> obj.getNombre().equalsIgnoreCase(item));
     }
 
 

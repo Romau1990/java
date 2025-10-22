@@ -84,6 +84,8 @@ public class Juego {
 
             while (true) {
 
+                Jugador.calcularVida();
+
                 if (contadorEstacion == 10) {
                     Area.rollearEstacion();
                     Area.rollearClima();
@@ -97,7 +99,7 @@ public class Juego {
                         + " ----------" + " dinero: " + Jugador.dinero + " ---------- " + "vida: " + Jugador.vida
                         + " ---------- " + "area: " + Jugador.areaActual);
                 System.out.println("Estacion: " + Area.estacion + " ---------- " + "Clima: " + Area.clima
-                        + " ---------- " + "temperatura: " + Area.temperatura);
+                        + " ---------- " + "temperatura: " + Area.temperatura + " ---------- " + Jugador.pesoTotalItems + "/" + Jugador.pesoMaximo );
                 System.out.print("Ver comandos -> comandos ----------");
                 System.out.println("salir del juego-> salir |");
                 System.out.println(
@@ -175,6 +177,7 @@ public class Juego {
                         if (haViajado == false) {
                             System.out.println(Juego.ROJO + "Necesitas viajar a algun sitio primero");
                         } else if (haViajado == true) {
+                            Jugador.calcularPeso();
                             Jugador.lootear();
                         }
                         break;
@@ -202,6 +205,13 @@ public class Juego {
                         int horas = game.nextInt();
                         game.nextLine();
                         Jugador.descansar(horas);
+                        break;
+                    
+                    case "dejar": 
+                        System.out.println("Que items quieres dejar?");
+                        Jugador.verMochila();
+                        String itemElegido = game.nextLine();
+                        Jugador.dejar(itemElegido);
                         break;
 
                     case "comandos":
