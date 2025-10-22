@@ -42,6 +42,8 @@ public class Jugador {
     static Boolean quemaduras = false;
     static String estado = "Sano";
 
+    // Calcular la vida del jugador ===========================================================================================
+
     static public void calcularVida() {
         if (Jugador.vida <= 0) {
             Jugador.vida = 0;
@@ -54,6 +56,8 @@ public class Jugador {
     //         System.out.println(Juego.ROJO + "No puedes cargar más peso. Descarta algo de tu mochila usando el comando -> dejar");
     //     }
     // }
+
+    // Ganar experiencia ===========================================================================================
 
     static public void ganarExp(int expGanada) {
         if (Jugador.exp >= 10) {
@@ -91,6 +95,8 @@ public class Jugador {
         }
     }
 
+    // Elegir atributo a mejorar ===========================================================================================
+
     static public void mejorarAtributo() {
         System.out.println("------------ estado de" + Jugador.nombre + "------------");
         System.out.println("fuerza: " + Jugador.fuerza + " (+) - aumenta capacidad de carga");
@@ -102,6 +108,8 @@ public class Jugador {
         System.out.println("voluntad: " + Jugador.voluntad + " (+) - mayor resistencia al daño y efectos secundarios");
         System.out.println("----------------------------------------------------");
     }
+
+    // Ver estado ===========================================================================================
 
     static public void verEstado() {
         System.out.println("------------ estado de" + Jugador.nombre + "------------");
@@ -116,17 +124,20 @@ public class Jugador {
         System.out.println("----------------------------------------------------");
     }
 
+    // Nombre del jugador ===========================================================================================
+
     static public void nombre(String playerName) {
         Jugador.nombre = playerName;
     }
 
-    // static public void getTurno() {
-    // System.out.println(Jugador.turno);
-    // }
+
+    // ver los turnos de la partida  ===========================================================================================
 
     static public int getTurno() {
         return Jugador.turno;
     }
+
+    // Incrementar turno ===========================================================================================
 
     static public int incrementarTurno(int turno) {
         nutricion -= (5 * turno);
@@ -135,6 +146,8 @@ public class Jugador {
         temperatura = 36;
         return Jugador.turno += turno;
     }
+
+    // Ver stats ===========================================================================================
 
     static public void verStats() {
         System.out.println("-------- " + Jugador.nombre + "stats " + " --------");
@@ -146,12 +159,16 @@ public class Jugador {
                 Jugador.voluntad, Jugador.destreza, Jugador.vida));
     }
 
+    // Estado actual ===========================================================================================
+
     static public void estadoActual() {
         System.out.println("------ " + "estado de " + Jugador.nombre + " ------");
         System.out.println(String.format(
                 "vida: %d \nnutricion: %d \nhidratacion: %d \nenergia: %d \ntemperatura: %d \nestado: %s", Jugador.vida,
                 Jugador.nutricion, Jugador.hidratacion, Jugador.energia, Jugador.temperatura, Jugador.estado));
     }
+
+    // Ver mochila ===========================================================================================
 
     static public void verMochila(Boolean verInfoCompleta) {
         for (ObjItem obj : Jugador.mochila) {
@@ -178,7 +195,8 @@ public class Jugador {
         verMochila(false);
     }
 
-    
+    // Lootear ===========================================================================================
+
     static void lootear() {
 
         ObjItem itemObtenido = ListadoItems.randomItem();
@@ -241,13 +259,19 @@ public class Jugador {
         }
     }
 
+    // Ver mapa ===========================================================================================
+
     static void verMapa() {
         Area.verAreas();
     }
 
+    // Crear ===========================================================================================
+
     static void crear() {
         System.out.println("acabas de crear un item");
     }
+
+    // Viajar ===========================================================================================
 
     static void viajar(String area) {
 
@@ -271,6 +295,8 @@ public class Jugador {
     static void recargar() {
     }
 
+    // Dejar ===========================================================================================
+
     static void dejar(String itemElegido) {
 
         Jugador.mochila.forEach(item -> {
@@ -286,6 +312,8 @@ public class Jugador {
             return item.cantidad == 0;
         });
     }
+
+    // Curar ===========================================================================================
 
     static void curar() {
         Scanner choice = new Scanner(System.in);
@@ -317,11 +345,44 @@ public class Jugador {
 
     }
 
+    static public void desinfectar(){
+        Scanner choice = new Scanner(System.in);
+        List<ObjItem> filtered = Jugador.mochila.stream().filter(arr -> {
+            return Arrays.asList(arr.getProposito()).contains("antibiotico");
+        }).toList();
+
+        if (filtered.isEmpty()) {
+            System.out.println(Juego.ROJO + "No tienes items para curar en tu mochila");
+            return;
+        }
+
+        System.out.println(Juego.BLANCO + "Cual item usaras?");
+
+        filtered.forEach(item -> {
+            System.out.println(item.nombre + " x" + item.cantidad + " " + item.descripcion);
+        });
+
+        String selectedItem = choice.nextLine();
+
+        filtered.forEach(item -> {
+            if (item.nombre.equalsIgnoreCase(selectedItem.trim()) && Jugador.estado == "infectado") {
+                System.out.println(Juego.VERDE + "ya no estas infectado");
+                Jugador.incrementarTurno(item.cantidadTurnos);
+                Jugador.estado = "sano";
+                item.cantidad--;
+            }
+        });
+    }
+
+    // Esconderse ===========================================================================================
+
     static void esconderse() {
         // for(ObjItem obj : Jugador.mochila){
         // System.out.println(obj.getDescription());
         // }
     }
+
+    // Descansar ===========================================================================================
 
     static void descansar(int hs) {
         Jugador.incrementarTurno(hs);
@@ -338,6 +399,7 @@ public class Jugador {
 
     }
 
+    // Equiparse ===========================================================================================
 
     static void equipar(String weapon) {
         boolean encontrado = false;
@@ -359,17 +421,36 @@ public class Jugador {
         }
     }
 
+    // Beber ===========================================================================================
+
     static void beber(){
-        System.out.println("Que items quieres usar?");
+        Scanner scan = new Scanner(System.in);
         List<ObjItem> filtrados = Jugador.mochila.stream().filter(item ->
             Arrays.asList(item.getProposito()).contains("hidratacion")
         ).toList();
         if(filtrados.isEmpty()){
             System.out.println("No tienes items para usar");
         }
+
+        System.out.println(Juego.BLANCO + "¿Qué quieres beber?");
+        filtrados.forEach(item -> {
+            System.out.println(item.getNombre() + " x" + item.cantidad);
+        });
+        String choice = scan.nextLine();
+
+        filtrados.forEach(item -> {
+            if(item.getNombre().trim().equalsIgnoreCase(choice)){
+                Jugador.hidratacion += (20 * item.getNivel());
+                System.out.println(Juego.VERDE + "+" + (20 * item.getNivel()) + " de hidratación");
+                item.cantidad--;
+            }
+        });
     }
 
+    // Comer ===========================================================================================
+
     static void comer(){
+        Scanner scan = new Scanner(System.in);
         System.out.println("Que deseas comer?");
         List<ObjItem> filtrado = Jugador.mochila.stream().filter(item ->
             Arrays.asList(item.getProposito()).contains("alimentacion")
@@ -377,6 +458,14 @@ public class Jugador {
         if(filtrado.isEmpty()){
             System.out.println("No tienes items para usar");
         }
+        String choice = scan.nextLine();
+        filtrado.forEach(item -> {
+            if(item.getNombre().trim().equalsIgnoreCase(choice)){
+                Jugador.nutricion += (20 * item.getNivel());
+                System.out.println(Juego.VERDE + "+" + (20 * item.getNivel()) + " de nutrición");
+                item.cantidad--;
+            }
+        });
     }
 
 }
