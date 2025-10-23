@@ -119,7 +119,7 @@ public class ListadoItems {
                 // === ITEMS ===
                 añadirItem(new Item("Vendaje", 1, 1, "Sirve para detener hemorragias leves.",
                                 new String[] { "curar" }, 1));
-                añadirItem(new Item("Carne cruda", 1, 2, "Carne sin cocinar, puede enfermarte.",
+                añadirItem(new Item("Carne cruda", 0, 2, "Carne sin cocinar, puede enfermarte.",
                                 new String[] { "alimentacion" }, 3));
                 añadirItem(new Item("Botella de agua", 1, 1, "Agua limpia para hidratarte.",
                                 new String[] { "hidratacion", "recipiente" }, 0));
@@ -143,6 +143,8 @@ public class ListadoItems {
                                 new String[] { "reparacion", "creacion" }, 0));
                 añadirItem(new Item("carne enlatada", 1, 2, "Alimento no muy sabroso pero quita el hambre",
                                 new String[] { "alimentacion", "recipiente" }, 2));
+                                añadirItem(new Item("agua sucia", 0, 2, "Alimento no muy sabroso pero quita el hambre",
+                                new String[] { "hidratacion", "recipiente" }, 2));
 
         }
 

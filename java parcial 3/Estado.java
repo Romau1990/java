@@ -145,4 +145,12 @@ public class Estado {
         }
     }
 
+    // ----------------------------------------------------------------------------------------
+
+    // static public void intoxicacion() {
+    //     if (Jugador.energia < 40 && Jugador.cansancio == false) {
+
+    //     }
+    // }
+
 }
