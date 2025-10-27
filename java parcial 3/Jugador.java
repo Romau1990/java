@@ -151,6 +151,7 @@ public class Jugador {
         hidratacion -= (5 * turno);
         energia -= (5 * turno);
         temperatura = 36;
+
         return Jugador.turno += turno;
     }
 
@@ -305,6 +306,8 @@ public class Jugador {
     // el peso del jugador)
     // ===========================================================================================
 
+
+
     static void dejar(String itemElegido) {
 
         Jugador.mochila.forEach(item -> {
@@ -320,12 +323,21 @@ public class Jugador {
         });
     }
 
+    // reducir peso ==============================================================================
+        static void calcularPeso(ObjItem item){
+        if (Jugador.pesoTotalItems < 0) {
+                Jugador.pesoTotalItems = 0;
+            }
+        Jugador.pesoTotalItems -= item.getPeso();
+    }
+
     // Descartar de la mochila
     // ==================================================================
 
     static void descartar() {
         Jugador.mochila.removeIf(i -> {
             return i.cantidad <= 0;
+            
         });
     }
 
@@ -368,6 +380,7 @@ public class Jugador {
                 Jugador.incrementarTurno(item.cantidadTurnos);
                 Jugador.vida += 10;
                 item.cantidad--;
+                calcularPeso(item);
             }
 
             else if (item.getNombre().equalsIgnoreCase(selectedItem.trim())
@@ -376,6 +389,7 @@ public class Jugador {
                 System.out.println(Juego.VERDE + "Has curado la infeccion");
                 Jugador.estado = "sano";
                 item.cantidad--;
+                calcularPeso(item);
             }
 
         });
@@ -412,6 +426,7 @@ public class Jugador {
                 Jugador.incrementarTurno(item.cantidadTurnos);
                 Jugador.estado = "sano";
                 item.cantidad--;
+                calcularPeso(item);
             }
         });
 
@@ -427,23 +442,45 @@ public class Jugador {
         // }
     }
 
-    // Descansar ✅
+    // Descansar ✅ (realizado por IA)
     // ===========================================================================================
 
-    static void descansar(int hs) {
-        Jugador.incrementarTurno(hs);
-        int energiaObtenida = hs * 10;
-        if (energiaObtenida > Jugador.energia) {
-            System.out.println("Descansaste " + hs + " hs. Tu energía esta al máximo");
-            System.out.println(Juego.VERDE + "Energia " + (100 - Jugador.energia));
-            Jugador.energia = 100;
-        } else {
-            System.out.println("Descansaste " + hs + " hs. Tu energía a incrementado");
-            System.out.println(Juego.VERDE + "Energia " + (10 * hs));
-            Jugador.energia += (10 * hs);
-        }
+    static void descansar() {
+    Scanner scan = new Scanner(System.in);
+    boolean enSuelo = false;
 
+    List<ObjItem> filtrado = Jugador.mochila.stream()
+            .filter(item -> Arrays.asList(item.getProposito()).contains("descansar"))
+            .toList();
+
+    if (filtrado.isEmpty()) {
+        System.out.println("No tienes dónde descansar. ¿Descansas en el suelo? (Y/N)");
+        String resp = scan.nextLine();
+        if (resp.equalsIgnoreCase("Y")) enSuelo = true;
+        else return;
     }
+
+    ObjItem elegido = null;
+    if (!filtrado.isEmpty()) {
+        filtrado.forEach(item -> System.out.println(item.getNombre() + " x" + item.cantidad));
+        System.out.println("¿Con qué deseas descansar?");
+        String choice = scan.nextLine();
+        elegido = filtrado.stream()
+                .filter(item -> item.getNombre().equalsIgnoreCase(choice.trim()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    System.out.println("¿Cuántas horas deseas descansar?");
+    int hs = scan.nextInt();
+
+    int energiaObtenida = enSuelo ? hs * 5 : hs * (10 * (elegido != null ? elegido.getNivel() : 1));
+    Jugador.energia = Math.min(100, Jugador.energia + energiaObtenida);
+    Jugador.incrementarTurno(hs);
+
+    System.out.println(Juego.VERDE + "Descansaste " + hs + " hs. Energía actual: " + Jugador.energia);
+}
+
 
     // Equiparse
     // ===========================================================================================
@@ -490,6 +527,7 @@ public class Jugador {
                 Jugador.hidratacion += (20 * item.getNivel());
                 System.out.println(Juego.VERDE + "+" + (20 * item.getNivel()) + " de hidratación");
                 item.cantidad--;
+                calcularPeso(item);
             }
         });
         descartar();
@@ -518,6 +556,7 @@ public class Jugador {
                 Jugador.nutricion += (20 * item.getNivel());
                 System.out.println(Juego.VERDE + "+" + (20 * item.getNivel()) + " de nutrición");
                 item.cantidad--;
+                calcularPeso(item);
             }
         });
 

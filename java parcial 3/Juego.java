@@ -206,11 +206,7 @@ public class Juego {
                         break;
 
                     case "descansar":
-                        System.out.println(
-                                "cuantas horas quieres descansar? Cada hora descansada equivale a un turno. Ten en cuenta eso. Pon 0 para cancelar");
-                        int horas = game.nextInt();
-                        game.nextLine();
-                        Jugador.descansar(horas);
+                        Jugador.descansar();
                         break;
 
                     case "dejar":
