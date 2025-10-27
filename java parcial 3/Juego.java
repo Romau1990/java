@@ -210,10 +210,19 @@ public class Juego {
                         break;
 
                     case "dejar":
-                        System.out.println("Que items quieres dejar?");
+                        if(!Jugador.mochila.isEmpty()){
+
+                            System.out.println("Que items quieres dejar?");
                         Jugador.verMochila();
                         String itemElegido = game.nextLine();
+
                         Jugador.dejar(itemElegido);
+                        }
+                        else{
+                            System.out.println(Juego.ROJO+ "no tienes nada en la mochila");
+                        }
+                        
+
                         break;
 
                     case "comandos":

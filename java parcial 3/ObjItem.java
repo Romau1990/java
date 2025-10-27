@@ -86,6 +86,9 @@ class Item extends ObjItem {
     public int turnos() {
         return this.cantidadTurnos;
     }
+    // public String getNombre(){
+    //     return this.nombre;
+    // }
 }
 
 // Clase Arma con atributos de daño
@@ -113,9 +116,9 @@ class Arma extends ObjItem {
         System.out.println("durabilidad: " + this.durabilidad);
     }
 
-    public String getNombre() {
-        return this.nombre;
-    }
+    // public String getNombre() {
+    //     return this.nombre;
+    // }
 
     public void basicInfo() {
         System.out.println(this.nombre + " " + this.dañoMin + "-" + this.dañoMax + " x" + this.cantidad);

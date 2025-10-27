@@ -100,7 +100,7 @@ public class ListadoItems {
                 añadirArma(new Arma("Arco y flecha", 3, 6, 12, 3, 80, "Arco de madera con cuerdas tensadas.",
                                 "perforante",
                                 new String[] { "arma", "caceria" }, 1));
-                añadirArma(new Arma("Sartén", 1, 2, 5, 3, 200, "Sartén de hierro, ideal para golpear cabezas.",
+                añadirArma(new Arma("Sarten", 1, 2, 5, 3, 200, "Sartén de hierro, ideal para golpear cabezas.",
                                 "impacto",
                                 new String[] { "arma", "cocina", "recipiente" }, 1));
                 añadirArma(new Arma("Pistola 9mm y balas", 4, 8, 14, 2, 90, "Pistola semiautomática con munición.",
@@ -110,7 +110,7 @@ public class ListadoItems {
                                 new String[] { "arma", "desguace" }, 1));
                 añadirArma(new Arma("Nada", 1, 0, 0, 0, 0, "No tenés un arma equipada.", "ninguno",
                                 new String[] { "nada" }, 1));
-                añadirArma(new Arma("Bisturí", 1, 2, 4, 1, 50, "Instrumento quirúrgico muy filoso.", "corte",
+                añadirArma(new Arma("Bisturi", 1, 2, 4, 1, 50, "Instrumento quirúrgico muy filoso.", "corte",
                                 new String[] { "arma", "recoleccion", "curar", "reparacion" }, 1));
                 añadirArma(new Arma("Destornillador", 1, 2, 5, 1, 80, "Destornillador común, útil y mortal.",
                                 "perforante",
@@ -131,13 +131,13 @@ public class ListadoItems {
                                 new String[] { "encender", "cocinar", "iluminar" }, 1));
                 añadirItem(new Item("Linterna", 1, 2, "Linterna de mano para iluminar.",
                                 new String[] { "iluminar" }, 0));
-                añadirItem(new Item("Sobre de dormir", 1, 3, "Permite descansar y recuperar energía.",
+                añadirItem(new Item("Sobre de dormir", 2, 3, "Permite descansar y recuperar energía.",
                                 new String[] { "descansar", "abrigar" }, 2));
                 añadirItem(new Item("Fuegos artificiales", 1, 2, "Sirven para distraer enemigos o iluminar.",
                                 new String[] { "distraer" }, 1));
                 añadirItem(new Item("Antibioticos", 1, 1, "Curan infecciones o enfermedades leves.",
                                 new String[] { "antibiotico" }, 0));
-                añadirItem(new Item("Garzúa", 1, 1, "Herramienta para forzar cerraduras.",
+                añadirItem(new Item("Garzua", 1, 1, "Herramienta para forzar cerraduras.",
                                 new String[] { "abrir" }, 3));
                 añadirItem(new Item("madera", 1, 2, "Sirve para reparar y construir",
                                 new String[] { "reparacion", "creacion" }, 0));

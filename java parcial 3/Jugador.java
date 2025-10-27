@@ -306,8 +306,6 @@ public class Jugador {
     // el peso del jugador)
     // ===========================================================================================
 
-
-
     static void dejar(String itemElegido) {
 
         Jugador.mochila.forEach(item -> {
@@ -318,16 +316,19 @@ public class Jugador {
                 Jugador.pesoTotalItems = 0;
             }
         });
+
         Jugador.mochila.removeIf(item -> {
             return item.cantidad == 0;
         });
+
     }
 
-    // reducir peso ==============================================================================
-        static void calcularPeso(ObjItem item){
+    // reducir peso
+    // ==============================================================================
+    static void calcularPeso(ObjItem item) {
         if (Jugador.pesoTotalItems < 0) {
-                Jugador.pesoTotalItems = 0;
-            }
+            Jugador.pesoTotalItems = 0;
+        }
         Jugador.pesoTotalItems -= item.getPeso();
     }
 
@@ -337,7 +338,7 @@ public class Jugador {
     static void descartar() {
         Jugador.mochila.removeIf(i -> {
             return i.cantidad <= 0;
-            
+
         });
     }
 
@@ -446,41 +447,54 @@ public class Jugador {
     // ===========================================================================================
 
     static void descansar() {
-    Scanner scan = new Scanner(System.in);
-    boolean enSuelo = false;
+        Scanner scan = new Scanner(System.in);
+        boolean enSuelo = false;
+        ObjItem elegido = null;
 
-    List<ObjItem> filtrado = Jugador.mochila.stream()
-            .filter(item -> Arrays.asList(item.getProposito()).contains("descansar"))
-            .toList();
+        List<ObjItem> filtrado = Jugador.mochila.stream()
+                .filter(item -> Arrays.asList(item.getProposito()).contains("descansar"))
+                .toList();
 
-    if (filtrado.isEmpty()) {
-        System.out.println("No tienes dónde descansar. ¿Descansas en el suelo? (Y/N)");
-        String resp = scan.nextLine();
-        if (resp.equalsIgnoreCase("Y")) enSuelo = true;
-        else return;
+        if (filtrado.isEmpty()) {
+            System.out.println("No tienes dónde descansar. ¿Descansas en el suelo? (Y/N)");
+            String resp = scan.nextLine();
+            if (resp.equalsIgnoreCase("Y"))
+                enSuelo = true;
+        }
+
+        if (!filtrado.isEmpty()) {
+            filtrado.forEach(item -> System.out.println(item.getNombre() + " x" + item.cantidad));
+            System.out.println("¿Con qué deseas descansar?");
+            String choice = scan.nextLine();
+            elegido = filtrado.stream()
+                    .filter(item -> item.getNombre().equalsIgnoreCase(choice.trim()))
+                    .findFirst()
+                    .orElse(null);
+        }
+
+        if (enSuelo == false && elegido == null) {
+            System.out.println("No elegiste una opción válida. No has descansado.");
+            return;
+        }
+
+        System.out.println("¿Cuántas horas deseas descansar?");
+        int hs = scan.nextInt();
+
+        // int energiaObtenida = enSuelo ? hs * 5 : hs * (10 * (elegido != null ?
+        // elegido.getNivel() : 1));
+        int energiaObtenida = 0;
+
+        if (enSuelo) {
+            energiaObtenida = hs * 1;
+        } else if (enSuelo == false && elegido != null) {
+            energiaObtenida = hs * elegido.getNivel();
+        }
+
+        Jugador.energia = Math.min(100, Jugador.energia + (energiaObtenida * 10) + (hs * 5));
+        Jugador.incrementarTurno(hs);
+
+        System.out.println(Juego.VERDE + "Descansaste " + hs + " hs. Energía actual: " + Jugador.energia);
     }
-
-    ObjItem elegido = null;
-    if (!filtrado.isEmpty()) {
-        filtrado.forEach(item -> System.out.println(item.getNombre() + " x" + item.cantidad));
-        System.out.println("¿Con qué deseas descansar?");
-        String choice = scan.nextLine();
-        elegido = filtrado.stream()
-                .filter(item -> item.getNombre().equalsIgnoreCase(choice.trim()))
-                .findFirst()
-                .orElse(null);
-    }
-
-    System.out.println("¿Cuántas horas deseas descansar?");
-    int hs = scan.nextInt();
-
-    int energiaObtenida = enSuelo ? hs * 5 : hs * (10 * (elegido != null ? elegido.getNivel() : 1));
-    Jugador.energia = Math.min(100, Jugador.energia + energiaObtenida);
-    Jugador.incrementarTurno(hs);
-
-    System.out.println(Juego.VERDE + "Descansaste " + hs + " hs. Energía actual: " + Jugador.energia);
-}
-
 
     // Equiparse
     // ===========================================================================================
