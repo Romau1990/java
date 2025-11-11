@@ -117,38 +117,40 @@ public class ListadoItems {
                                 new String[] { "arma", "desguace", "reparacion" }, 1));
 
                 // === ITEMS ===
-                añadirItem(new Item("Vendaje", 1, 1, "Sirve para detener hemorragias leves.",
+                añadirItem(new Item("Vendaje", 1, 0.1, "Sirve para detener hemorragias leves.",
                                 new String[] { "curar" }, 1));
-                añadirItem(new Item("Carne cruda", 0, 2, "Carne sin cocinar, puede enfermarte.",
+                añadirItem(new Item("Carne cruda", 0, 0.5, "Carne sin cocinar, puede enfermarte.",
                                 new String[] { "alimentacion" }, 3));
-                añadirItem(new Item("Botella de agua", 1, 1, "Agua limpia para hidratarte.",
+                añadirItem(new Item("Botella de agua", 1, 0.4, "Agua limpia para hidratarte.",
                                 new String[] { "hidratacion", "recipiente" }, 0));
                 añadirItem(new Item("Chatarra", 1, 3, "Restos metálicos, útiles para reparar cosas.",
                                 new String[] { "reparacion", "creacion" }, 0));
                 añadirItem(new Item("Electronicos", 1, 2, "Piezas electrónicas para fabricar o reparar.",
                                 new String[] { "reparacion", "creacion" }, 0));
-                añadirItem(new Item("Fosforos", 1, 1, "Caja con fósforos secos.",
+                añadirItem(new Item("Fosforos", 1, 0.1, "Caja con fósforos secos.",
                                 new String[] { "encender", "cocinar", "iluminar" }, 1));
                 añadirItem(new Item("Linterna", 1, 2, "Linterna de mano para iluminar.",
                                 new String[] { "iluminar" }, 0));
                 añadirItem(new Item("Sobre de dormir", 2, 3, "Permite descansar y recuperar energía.",
                                 new String[] { "descansar", "abrigar" }, 2));
-                añadirItem(new Item("Fuegos artificiales", 1, 2, "Sirven para distraer enemigos o iluminar.",
+                añadirItem(new Item("Fuegos artificiales", 1, 0.5, "Sirven para distraer enemigos o iluminar.",
                                 new String[] { "distraer" }, 1));
-                añadirItem(new Item("Antibioticos", 1, 1, "Curan infecciones o enfermedades leves.",
+                añadirItem(new Item("Antibioticos", 1, 0.1, "Curan infecciones o enfermedades leves.",
                                 new String[] { "antibiotico" }, 0));
-                añadirItem(new Item("Garzua", 1, 1, "Herramienta para forzar cerraduras.",
+                añadirItem(new Item("Garzua", 1, 0.1, "Herramienta para forzar cerraduras.",
                                 new String[] { "abrir" }, 3));
                 añadirItem(new Item("madera", 1, 2, "Sirve para reparar y construir",
                                 new String[] { "reparacion", "creacion" }, 0));
-                añadirItem(new Item("carne enlatada", 1, 2, "Alimento no muy sabroso pero quita el hambre",
+                añadirItem(new Item("carne enlatada", 1, 1, "Alimento no muy sabroso pero quita el hambre",
                                 new String[] { "alimentacion", "recipiente" }, 2));
-                añadirItem(new Item("agua sucia", 0, 2, "Alimento no muy sabroso pero quita el hambre",
+                añadirItem(new Item("agua sucia", 0, 0.4, "Alimento no muy sabroso pero quita el hambre",
                                 new String[] { "hidratacion", "recipiente" }, 2));
                 añadirItem(new Item("Traje antiradiacion", 2, 2, "traje contra radiacion.",
                                 new String[] { "equipo", "radiacion" }, 1));
-                añadirItem(new Item("pildoras antiradiacion", 1, 0, "pildoras para curar la radiacion",
+                añadirItem(new Item("pildoras antiradiacion", 1, 0.1, "pildoras para curar la radiacion",
                                 new String[] { "radiacion" }, 0));
+                añadirItem(new Item("manzana", 1, 0.2, "alimento liviano para el camino",
+                                new String[] { "alimentacion" }, 0));
 
         }
 

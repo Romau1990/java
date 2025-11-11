@@ -4,14 +4,14 @@
 public abstract class ObjItem {
     String nombre;
     int nivel;
-    int peso;
+    double peso;
     int durabilidad;
     String descripcion;
     int cantidad;
     String[] proposito;
     int cantidadTurnos;
 
-    public ObjItem(String nombre, int nivel, int peso, String descripcion, String proposito[], int cantidadTurnos) {
+    public ObjItem(String nombre, int nivel, double peso, String descripcion, String proposito[], int cantidadTurnos) {
         this.nombre = nombre;
         this.nivel = nivel;
         this.peso = peso;
@@ -33,7 +33,7 @@ public abstract class ObjItem {
         return this.nivel;
     }
 
-    public int getPeso() {
+    public double getPeso() {
         return this.peso;
     }
 
@@ -76,7 +76,7 @@ class Item extends ObjItem {
     int cantidadTurnos;
     int cantidad = 1;
 
-    public Item(String nombre, int nivel, int peso, String descripcion, String proposito[], int cantidadTurnos) {
+    public Item(String nombre, int nivel, double peso, String descripcion, String proposito[], int cantidadTurnos) {
         super(nombre, nivel, peso, descripcion, proposito, cantidadTurnos);
         this.cantidadTurnos = cantidadTurnos;
     }
@@ -101,7 +101,7 @@ class Arma extends ObjItem {
     int cantidadTurnos;
     int cantidad = 1;
 
-    public Arma(String nombre, int nivel, int dañoMin, int dañoMax, int peso, int durabilidad, String descripcion,
+    public Arma(String nombre, int nivel, int dañoMin, int dañoMax, double peso, int durabilidad, String descripcion,
             String tipoDaño, String proposito[], int cantidadTurnos) {
         super(nombre, nivel, peso, descripcion, proposito, cantidadTurnos);
         this.dañoMin = dañoMin;

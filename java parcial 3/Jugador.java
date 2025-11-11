@@ -245,7 +245,7 @@ public class Jugador {
     static void lootear() {
 
         ObjItem itemObtenido = ListadoItems.randomItem();
-        int itemPeso = itemObtenido.getPeso();
+        double itemPeso = itemObtenido.getPeso();
         int ganaDinero = (int) (Math.random() * 10);
 
         int espacioDisponible = Jugador.pesoMaximo - Jugador.pesoTotalItems;
@@ -604,6 +604,7 @@ public class Jugador {
                 .filter(item -> Arrays.asList(item.getProposito()).contains("hidratacion")).toList();
         if (filtrados.isEmpty()) {
             System.out.println("No tienes items para usar");
+            return;
         }
 
         System.out.println(Juego.BLANCO + "¿Qué quieres beber?");
@@ -633,6 +634,7 @@ public class Jugador {
                 .filter(item -> Arrays.asList(item.getProposito()).contains("alimentacion")).toList();
         if (filtrado.isEmpty()) {
             System.out.println("No tienes items para usar");
+            return;
         }
 
         System.out.println("Que deseas comer?");
