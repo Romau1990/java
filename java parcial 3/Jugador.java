@@ -31,6 +31,7 @@ public class Jugador {
     static int exitoPunteria = 50;
     static int defensaGeneral = 5;
     static int defensaVestimenta = 0;
+    static String equipo;
 
     static Boolean radiacion = false;
     static Boolean inanicion = false;
@@ -147,10 +148,21 @@ public class Jugador {
     // ===========================================================================================
 
     static public int incrementarTurno(int turno) {
-        nutricion -= (5 * turno);
-        hidratacion -= (5 * turno);
-        energia -= (5 * turno);
-        temperatura = 36;
+        if (Jugador.nutricion > 0) {
+            Jugador.nutricion -= (5 * turno);
+        }
+
+        if (Jugador.hidratacion > 0) {
+            Jugador.hidratacion -= (5 * turno);
+        }
+
+        if (Jugador.energia > 0) {
+            Jugador.energia -= (5 * turno);
+        }
+
+        Estado.inanicion();
+        Estado.deshidratacion();
+        Estado.cansancio();
 
         return Jugador.turno += turno;
     }
@@ -519,6 +531,30 @@ public class Jugador {
         }
     }
 
+    // equipar ropa
+
+    static public void vestir() {
+
+        List<ObjItem> filtered = Jugador.mochila.stream()
+                .filter(item -> Arrays.asList(item.getProposito()).contains("equipo"))
+                .toList();
+
+        if (!filtered.isEmpty()) {
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Que equipamiento quieres usar?");
+            System.out.println(filtered);
+            String choice = scan.nextLine();
+            if (choice == null) {
+                System.out.println("No has elegido ningún item.");
+                return;
+            }
+            Jugador.equipo = choice + " [equipado]";
+        } else {
+            System.out.println("No tienes items para equipar");
+        }
+
+    }
+
     // Beber ✅
     // ===========================================================================================
 
@@ -558,11 +594,6 @@ public class Jugador {
         if (filtrado.isEmpty()) {
             System.out.println("No tienes items para usar");
         }
-
-        System.out.println(Juego.BLANCO + "¿Qué quieres beber?");
-        filtrado.forEach(item -> {
-            System.out.println(item.getNombre() + " x" + item.cantidad);
-        });
 
         String choice = scan.nextLine();
         filtrado.forEach(item -> {

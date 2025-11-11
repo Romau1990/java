@@ -67,9 +67,9 @@ public class ListadoItems {
                                         ((Item) o).nivel,
                                         ((Item) o).peso,
                                         ((Item) o).descripcion,
-                                        ((Item) o).proposito,                                       
+                                        ((Item) o).proposito,
                                         ((Item) o).cantidadTurnos);
-                                        
+
                 } else {
                         copia = new Arma(
                                         ((Arma) o).nombre,
@@ -143,8 +143,12 @@ public class ListadoItems {
                                 new String[] { "reparacion", "creacion" }, 0));
                 añadirItem(new Item("carne enlatada", 1, 2, "Alimento no muy sabroso pero quita el hambre",
                                 new String[] { "alimentacion", "recipiente" }, 2));
-                                añadirItem(new Item("agua sucia", 0, 2, "Alimento no muy sabroso pero quita el hambre",
+                añadirItem(new Item("agua sucia", 0, 2, "Alimento no muy sabroso pero quita el hambre",
                                 new String[] { "hidratacion", "recipiente" }, 2));
+                añadirItem(new Item("Traje antiradiacion", 2, 2, "traje contra radiacion.",
+                                new String[] { "equipo", "radiacion" }, 1));
+                añadirItem(new Item("pildoras antiradiacion", 1, 0, "pildoras para curar la radiacion",
+                                new String[] { "radiacion" }, 0));
 
         }
 

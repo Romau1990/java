@@ -210,18 +210,16 @@ public class Juego {
                         break;
 
                     case "dejar":
-                        if(!Jugador.mochila.isEmpty()){
+                        if (!Jugador.mochila.isEmpty()) {
 
                             System.out.println("Que items quieres dejar?");
-                        Jugador.verMochila();
-                        String itemElegido = game.nextLine();
+                            Jugador.verMochila();
+                            String itemElegido = game.nextLine();
 
-                        Jugador.dejar(itemElegido);
+                            Jugador.dejar(itemElegido);
+                        } else {
+                            System.out.println(Juego.ROJO + "no tienes nada en la mochila");
                         }
-                        else{
-                            System.out.println(Juego.ROJO+ "no tienes nada en la mochila");
-                        }
-                        
 
                         break;
 
@@ -237,13 +235,36 @@ public class Juego {
                         Jugador.comer();
                         break;
 
+                    case "hervir":
+                        Jugador.hervir();
+                        break;
+
                     case "desinfectar":
                         Jugador.desinfectar();
+                        break;
+
+                    case "cocinar":
+                        Jugador.cocinar();
+                        break;
+
+                    case "vestir":
+                        Jugador.vestir();
                         break;
 
                     default:
                         System.out.println(Juego.ROJO + "El comando seleccionado no existe");
                         break;
+                }
+
+                // Condición de victoria
+                if (Jugador.getTurno() >= 50) {
+                    System.out.println(
+                            "=====================================================================================");
+                    System.out.println(Juego.VERDE
+                            + "FELICIDADES HAS SOBREVIVIDO A TU AVENTURA Y HAZ ALCANZADO UN NUEVO CAMPAMENTO. GRACIAS POR JUGAR");
+                    System.out.println(
+                            "=====================================================================================");
+                    break;
                 }
 
             }

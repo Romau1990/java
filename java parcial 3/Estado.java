@@ -57,7 +57,7 @@ public class Estado {
     // ----------------------------------------------------------------------------------------
 
     static public void deshidratacion() {
-        if (Jugador.hidratacion < 40) {
+        if (Jugador.hidratacion < 40 && Jugador.hidratacion >= 20) {
             System.out.println("Estas ligeramente sediento, intenta tomar liquidos");
         } else if (Jugador.hidratacion < 20 && Jugador.deshidratacion == false) {
             System.out.println(
@@ -65,16 +65,17 @@ public class Estado {
             Jugador.deshidratacion = true;
             Jugador.destreza -= 3;
             Jugador.resistencia -= 3;
-        } else if (Jugador.hidratacion == 0 && Jugador.deshidratacion == true) {
-            System.out.println(Juego.ROJO + "-5 de vida porque estas muriendo de sed");
-            Jugador.vida -= 5;
+        } else if (Jugador.hidratacion <= 0 && Jugador.deshidratacion == true) {
+            Jugador.hidratacion = 0;
+            System.out.println(Juego.ROJO + "-10 de vida porque estas muriendo de sed");
+            Jugador.vida -= 10;
         }
     }
 
     // ----------------------------------------------------------------------------------------
 
     static public void inanicion() {
-        if (Jugador.nutricion < 40) {
+        if (Jugador.nutricion < 40 && Jugador.nutricion >= 20) {
             System.out.println("Estas ligeramente hambriento, intenta comer algo");
         } else if (Jugador.nutricion < 20 && Jugador.inanicion == false) {
             System.out.println(Juego.AMARILLO
@@ -82,9 +83,10 @@ public class Estado {
             Jugador.inanicion = true;
             Jugador.destreza -= 3;
             Jugador.resistencia -= 3;
-        } else if (Jugador.nutricion == 0 && Jugador.inanicion == true) {
-            System.out.println(Juego.ROJO + "-5 de vida porque estas muriendo de hambre");
-            Jugador.vida -= 5;
+        } else if (Jugador.nutricion <= 0 && Jugador.inanicion == true) {
+            Jugador.nutricion = 0;
+            System.out.println(Juego.ROJO + "-10 de vida porque estas muriendo de hambre");
+            Jugador.vida -= 10;
         }
     }
 
@@ -94,8 +96,7 @@ public class Estado {
         int chances = (int) (Math.random() * 10);
         if (chances > 7 && Jugador.fiebre == false) {
             Jugador.fiebre = true;
-        }
-        else if(Jugador.fiebre == true){
+        } else if (Jugador.fiebre == true) {
             System.out.println(Juego.ROJO + "Tienes fiebre. Te sientes cansado");
             Jugador.voluntad -= 3;
         }
@@ -103,19 +104,20 @@ public class Estado {
 
     // ----------------------------------------------------------------------------------------
 
-       static public void quemadura() {
+    static public void quemadura() {
         int chances = (int) (Math.random() * 10);
         if (chances > 7 && Jugador.quemaduras == false) {
             Jugador.quemaduras = true;
             Jugador.contadorQuemadura++;
-            System.out.println(Juego.ROJO + "Tu piel esta quemada. Ten cuidado o podría ser peor. Usa protector solar, aloe vera o busca refugio del sol");
+            System.out.println(Juego.ROJO
+                    + "Tu piel esta quemada. Ten cuidado o podría ser peor. Usa protector solar, aloe vera o busca refugio del sol");
             Jugador.voluntad -= 3;
-            int chancesFiebre = (int)(Math.random() * 10);
-            if(Jugador.fiebre == false && chancesFiebre >= 7){
+            int chancesFiebre = (int) (Math.random() * 10);
+            if (Jugador.fiebre == false && chancesFiebre >= 7) {
                 Jugador.fiebre = true;
             }
 
-            if(Jugador.contadorQuemadura == 3){
+            if (Jugador.contadorQuemadura == 3) {
                 Jugador.insolacion = true;
                 Jugador.fiebre = true;
             }
@@ -148,9 +150,9 @@ public class Estado {
     // ----------------------------------------------------------------------------------------
 
     // static public void intoxicacion() {
-    //     if (Jugador.energia < 40 && Jugador.cansancio == false) {
+    // if (Jugador.energia < 40 && Jugador.cansancio == false) {
 
-    //     }
+    // }
     // }
 
 }

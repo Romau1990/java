@@ -17,17 +17,17 @@ public class Area {
             "colina -> turno: 3",
             "basurero -> turnos: 2", "bosque -> turno: 2", "sitio en construcción -> turno: 1", "caverna -> turno: 4",
             "campo -> turno: 1", "tienda -> turno: 1",
-            "iglesia abandonada -> turno: 1", "caravana -> turno: 1", "puente -> turno: 1", "planta nuclear -> turno: 4", "hospital -> turno: 3", "estacion de policia -> turno: 4" };
+            "iglesia abandonada -> turno: 1", "caravana -> turno: 1", "puente -> turno: 1",
+            "planta nuclear -> turno: 4", "hospital -> turno: 3", "estacion de policia -> turno: 4" };
 
-  
-    static void estacionRandom(){
+    static void estacionRandom() {
         var indexRandom = (int) (Math.random() * Area.listadoEstaciones.size());
         String estacionRandom = Area.listadoEstaciones.get(indexRandom);
-        Area.estacion = estacionRandom; 
+        Area.estacion = estacionRandom;
     }
 
-    static void rollearTemp(){
-            switch (Area.estacion) {
+    static void rollearTemp() {
+        switch (Area.estacion) {
             case "Primavera":
                 Area.temperatura = (int) (Math.random() * (25 - 14 + 1)) + 14;
                 break;
@@ -44,22 +44,27 @@ public class Area {
                 Area.temperatura = (int) (Math.random() * (10 - 0 + 1)) + 0;
                 break;
 
-        } 
+        }
     }
 
-    static void rollearClima(){
-        ArrayList<String> listadoClimas = new ArrayList<>(List.of("Lluvioso", "Soleado", "Humedo", "Ventoso", "Seco", "Agradable", "Fresco"));
+    static void rollearClima() {
+        ArrayList<String> listadoClimas = new ArrayList<>(
+                List.of("Lluvioso", "Soleado", "Humedo", "Ventoso", "Seco", "Agradable", "Fresco"));
         int index = (int) (Math.random() * listadoClimas.size());
         Area.clima = listadoClimas.get(index);
     }
 
-    static void rollearEstacion(){
-        if(Area.estacion.equalsIgnoreCase("Primavera")){Area.estacion = "Verano";}
-        else if(Area.estacion.equalsIgnoreCase("Verano")){Area.estacion = "Otoño";}
-        else if(Area.estacion.equalsIgnoreCase("Otoño")){Area.estacion = "Invierno";}
-        else if(Area.estacion.equalsIgnoreCase( "Invierno") ){Area.estacion = "Primavera";}
+    static void rollearEstacion() {
+        if (Area.estacion.equalsIgnoreCase("Primavera")) {
+            Area.estacion = "Verano";
+        } else if (Area.estacion.equalsIgnoreCase("Verano")) {
+            Area.estacion = "Otoño";
+        } else if (Area.estacion.equalsIgnoreCase("Otoño")) {
+            Area.estacion = "Invierno";
+        } else if (Area.estacion.equalsIgnoreCase("Invierno")) {
+            Area.estacion = "Primavera";
+        }
     }
-    
 
     static void verAreas() {
         Arrays.asList(Area.ListaAreas).forEach(a -> {
@@ -79,8 +84,7 @@ public class Area {
                 break;
 
             case "playa":
-                System.out.println("Hace mucho calor");
-                if(Area.temperatura > 25){
+                if (Area.temperatura > 25) {
                     Estado.quemadura();
                     Jugador.hidratacion -= 2;
                 }
@@ -118,7 +122,7 @@ public class Area {
                 // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
                 break;
 
-            case "iglesia":
+            case "iglesia abandonada":
                 // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
                 break;
 
@@ -128,6 +132,21 @@ public class Area {
 
             case "puente":
                 // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+                break;
+
+            case "planta nuclear":
+                // voy a asegurarme de que el item se pueda equipar primero
+
+                break;
+
+            case "hospital":
+                var chance2 = Math.random() * 10;
+                if (chance2 > 5) {
+                    Estado.radiacion();
+                }
+                break;
+
+            case "estacion de policia":
                 break;
         }
 
