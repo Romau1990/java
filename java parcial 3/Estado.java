@@ -34,6 +34,7 @@ public class Estado {
             Jugador.destreza -= 1;
         } else if (Jugador.hipotermia == true) {
             Estado.fiebre();
+            Jugador.estado = "enfermo";
             System.out.println(Juego.ROJO + "-5 de vida por hipotermia");
             Jugador.vida -= 5;
         }
@@ -48,6 +49,7 @@ public class Estado {
             Jugador.voluntad -= 1;
         } else if (Jugador.insolacion == true) {
             Estado.fiebre();
+            Jugador.estado = "enfermo";
             System.out.println(Juego.ROJO + "-5 de vida por insolacion");
             Jugador.vida -= 5;
             Jugador.hidratacion -= 5;
@@ -58,8 +60,10 @@ public class Estado {
 
     static public void deshidratacion() {
         if (Jugador.hidratacion < 40 && Jugador.hidratacion >= 20) {
+            Jugador.estado = "sediento";
             System.out.println("Estas ligeramente sediento, intenta tomar liquidos");
         } else if (Jugador.hidratacion < 20 && Jugador.deshidratacion == false) {
+            Jugador.estado = "muy sediento";
             System.out.println(
                     Juego.AMARILLO + "Tienes mucha sed y estas deshidratado. Considera tomar liquidos urgentemente");
             Jugador.deshidratacion = true;
@@ -67,6 +71,7 @@ public class Estado {
             Jugador.resistencia -= 3;
         } else if (Jugador.hidratacion <= 0 && Jugador.deshidratacion == true) {
             Jugador.hidratacion = 0;
+            Jugador.estado = "muriendo de sed";
             System.out.println(Juego.ROJO + "-10 de vida porque estas muriendo de sed");
             Jugador.vida -= 10;
         }
@@ -76,14 +81,17 @@ public class Estado {
 
     static public void inanicion() {
         if (Jugador.nutricion < 40 && Jugador.nutricion >= 20) {
+            Jugador.estado = "hambriento";
             System.out.println("Estas ligeramente hambriento, intenta comer algo");
         } else if (Jugador.nutricion < 20 && Jugador.inanicion == false) {
+            Jugador.estado = "muy hambriento";
             System.out.println(Juego.AMARILLO
                     + "Tienes mucha hambre y tienes sintomas de inanicion. Considera comer urgentemente");
             Jugador.inanicion = true;
             Jugador.destreza -= 3;
             Jugador.resistencia -= 3;
         } else if (Jugador.nutricion <= 0 && Jugador.inanicion == true) {
+            Jugador.estado = "famelico";
             Jugador.nutricion = 0;
             System.out.println(Juego.ROJO + "-10 de vida porque estas muriendo de hambre");
             Jugador.vida -= 10;
@@ -108,6 +116,7 @@ public class Estado {
         int chances = (int) (Math.random() * 10);
         if (chances > 7 && Jugador.quemaduras == false) {
             Jugador.quemaduras = true;
+            Jugador.estado = "quemado";
             Jugador.contadorQuemadura++;
             System.out.println(Juego.ROJO
                     + "Tu piel esta quemada. Ten cuidado o podría ser peor. Usa protector solar, aloe vera o busca refugio del sol");
@@ -129,6 +138,7 @@ public class Estado {
     static public void radiacion() {
         if (Jugador.radiacion == false) {
             Jugador.radiacion = true;
+            Jugador.estado = "irradiado";
             System.out.println(Juego.ROJO + "Te encuentras irradiado, busca pildoras contra la radiacion urgentemente");
         } else if (Jugador.radiacion == true) {
             System.out.println(Juego.ROJO + "-5 de vida por radiacion");

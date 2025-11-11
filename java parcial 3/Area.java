@@ -135,14 +135,18 @@ public class Area {
                 break;
 
             case "planta nuclear":
-                // voy a asegurarme de que el item se pueda equipar primero
-
+                if (Jugador.equipo[0] == null
+                        || !Arrays.asList(Jugador.equipo[0].getProposito()).contains("radiacion")) {
+                    Estado.radiacion();
+                } else {
+                    System.out.println("Estas usando un equipo contra la radiación, estas seguro");
+                }
                 break;
 
             case "hospital":
                 var chance2 = Math.random() * 10;
                 if (chance2 > 5) {
-                    Estado.radiacion();
+                    Estado.infeccion();
                 }
                 break;
 

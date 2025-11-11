@@ -11,7 +11,6 @@ public abstract class ObjItem {
     String[] proposito;
     int cantidadTurnos;
 
-
     public ObjItem(String nombre, int nivel, int peso, String descripcion, String proposito[], int cantidadTurnos) {
         this.nombre = nombre;
         this.nivel = nivel;
@@ -20,6 +19,10 @@ public abstract class ObjItem {
         this.proposito = proposito;
         this.cantidad = 1;
         this.cantidadTurnos = cantidadTurnos;
+    }
+
+    public void changeName(String newName) {
+        this.nombre = newName;
     }
 
     public String getNombre() {
@@ -52,7 +55,6 @@ public abstract class ObjItem {
             System.out.println(purpose);
         }
     }
-
 
     public void verInfo() {
         System.out.println("------------" + this.nombre + "---------------");
@@ -87,7 +89,7 @@ class Item extends ObjItem {
         return this.cantidadTurnos;
     }
     // public String getNombre(){
-    //     return this.nombre;
+    // return this.nombre;
     // }
 }
 
@@ -117,7 +119,7 @@ class Arma extends ObjItem {
     }
 
     // public String getNombre() {
-    //     return this.nombre;
+    // return this.nombre;
     // }
 
     public void basicInfo() {

@@ -31,7 +31,7 @@ public class Jugador {
     static int exitoPunteria = 50;
     static int defensaGeneral = 5;
     static int defensaVestimenta = 0;
-    static String equipo;
+    static ObjItem[] equipo = new ObjItem[1];
 
     static Boolean radiacion = false;
     static Boolean inanicion = false;
@@ -50,6 +50,7 @@ public class Jugador {
         if (Jugador.vida <= 0) {
             Jugador.vida = 0;
             System.out.println(Juego.ROJO + "Estas muerto has sobrevivido " + Jugador.turno + " turnos");
+            System.exit(0);
         }
     }
 
@@ -163,6 +164,26 @@ public class Jugador {
         Estado.inanicion();
         Estado.deshidratacion();
         Estado.cansancio();
+
+        if (Jugador.radiacion == true) {
+            Estado.radiacion();
+        }
+
+        if (Jugador.fiebre == true) {
+            Estado.fiebre();
+        }
+
+        if (Jugador.hipotermia == true) {
+            Estado.hipotermia();
+        }
+
+        if (Jugador.insolacion == true) {
+            Estado.insolacion();
+        }
+
+        if (Jugador.quemaduras == true) {
+            Estado.quemadura();
+        }
 
         return Jugador.turno += turno;
     }
@@ -411,6 +432,12 @@ public class Jugador {
 
     }
 
+    // equipo en uso
+
+    static public void equipoUsado() {
+        System.out.println(Jugador.equipo[0].getNombre());
+    }
+
     // Desinfectar ✅
     // ====================================================================================
 
@@ -540,15 +567,28 @@ public class Jugador {
                 .toList();
 
         if (!filtered.isEmpty()) {
+
             Scanner scan = new Scanner(System.in);
+
             System.out.println("Que equipamiento quieres usar?");
-            System.out.println(filtered);
+            filtered.forEach(item -> {
+                System.out.println(item.getNombre() + " x" + item.cantidad);
+            });
             String choice = scan.nextLine();
+
             if (choice == null) {
                 System.out.println("No has elegido ningún item.");
                 return;
             }
-            Jugador.equipo = choice + " [equipado]";
+
+            filtered.forEach(item -> {
+                if (item.getNombre().equalsIgnoreCase(choice)) {
+                    Jugador.equipo[0] = item;
+                } else {
+                    System.out.println("No tienes tal item en tu inventario");
+                }
+            });
+
         } else {
             System.out.println("No tienes items para equipar");
         }
@@ -588,14 +628,20 @@ public class Jugador {
 
     static void comer() {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Que deseas comer?");
+
         List<ObjItem> filtrado = Jugador.mochila.stream()
                 .filter(item -> Arrays.asList(item.getProposito()).contains("alimentacion")).toList();
         if (filtrado.isEmpty()) {
             System.out.println("No tienes items para usar");
         }
 
+        System.out.println("Que deseas comer?");
+        filtrado.forEach(item -> {
+            System.out.println(item.getNombre() + " x" + item.cantidad);
+        });
+
         String choice = scan.nextLine();
+
         filtrado.forEach(item -> {
             if (item.getNombre().trim().equalsIgnoreCase(choice)) {
                 Jugador.nutricion += (20 * item.getNivel());
@@ -613,11 +659,11 @@ public class Jugador {
 
     static void cocinar() {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Que quieres cocinar?");
 
         List<ObjItem> filtrado = Jugador.mochila.stream()
                 .filter(item -> Arrays.asList(item.getProposito()).contains("alimentacion") && item.getNivel() == 0)
                 .toList();
+        System.out.println("Que quieres cocinar?");
 
         if (filtrado.isEmpty()) {
             System.out.println("No tienes items para cocinar");
@@ -638,7 +684,9 @@ public class Jugador {
                         System.out.println("cocinando...");
                         Thread.sleep(1000);
                         alimento.nivel++;
+                        alimento.changeName("carne cocida");
                         Jugador.incrementarTurno(2);
+                        System.out.println("Listo");
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -679,7 +727,9 @@ public class Jugador {
                             System.out.println("cocinando...");
                             Thread.sleep(1000);
                             bebida.nivel++;
+                            bebida.changeName("agua purificada");
                             Jugador.incrementarTurno(2);
+                            System.out.println("Listo");
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
