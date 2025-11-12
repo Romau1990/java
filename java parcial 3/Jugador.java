@@ -243,40 +243,6 @@ public class Jugador {
     // ===========================================================================================
 
     static void generarLoot() {
-
-    }
-
-    // lootear ✅
-    // ===========================================================================================
-
-    static void lootear() {
-
-        // metodo de testeo
-        int isLocked = (int) (Math.random() * 10);
-        ObjItem lockPick = null;
-
-        for (ObjItem item : Jugador.mochila) {
-            if (Arrays.asList(item.getProposito()).contains("abrir")) {
-                lockPick = item;
-            }
-        }
-
-        if (isLocked > 7 && lockPick == null) {
-            System.out.println("Esta cerrado con llave... necesito una garzúa");
-            return;
-        } else if (isLocked > 7 && lockPick != null) {
-            var unlockAttempt = Math.random() * 10;
-            if (unlockAttempt < 5) {
-                System.out.println("la garzúa se ha roto");
-                lockPick.cantidad--;
-                return;
-            } else {
-                Jugador.generarLoot();
-            }
-        } else {
-            Jugador.generarLoot();
-        }
-
         ObjItem itemObtenido = ListadoItems.randomItem();
         double itemPeso = itemObtenido.getPeso();
         int ganaDinero = (int) (Math.random() * 10);
@@ -301,9 +267,9 @@ public class Jugador {
 
                     if (itemEnMochila instanceof Item
                             && itemEnMochila.getNombre().equalsIgnoreCase(itemObtenido.getNombre())) {
-                        itemEnMochila.cantidad++; // ...aumentamos la cantidad del item que YA teníamos
+                        itemEnMochila.cantidad++;
                         yaLoTenia = true;
-                        break; // Salimos del bucle, ya terminamos
+                        break;
                     }
                 }
             }
@@ -326,6 +292,41 @@ public class Jugador {
             int cantidadDinero = (int) (Math.random() * 10);
             System.out.println(Juego.BLANCO + "Has conseguido " + "$" + cantidadDinero);
             Jugador.dinero += cantidadDinero;
+        }
+
+    }
+
+    // lootear ✅
+    // ===========================================================================================
+
+    static void lootear() {
+
+        // verifico si el loot esta bajo llave
+        int isLocked = (int) (Math.random() * 10);
+        ObjItem lockPick = null;
+
+        for (ObjItem item : Jugador.mochila) {
+            if (Arrays.asList(item.getProposito()).contains("abrir")) {
+                lockPick = item;
+            }
+        }
+
+        if (isLocked > 7 && lockPick == null) {
+            System.out.println("Esta cerrado con llave... necesito una garzúa");
+            Jugador.incrementarTurno(1);
+            return;
+        } else if (isLocked > 7 && lockPick != null) {
+            var unlockAttempt = Math.random() * 10;
+            if (unlockAttempt < 5) {
+                System.out.println("la garzúa se ha roto");
+                Jugador.incrementarTurno(1);
+                lockPick.cantidad--;
+                return;
+            } else {
+                Jugador.generarLoot();
+            }
+        } else {
+            Jugador.generarLoot();
         }
 
     }
@@ -617,6 +618,7 @@ public class Jugador {
 
             filtered.forEach(item -> {
                 if (item.getNombre().equalsIgnoreCase(choice)) {
+                    System.out.println("Te has equipado con " + choice);
                     Jugador.equipo[0] = item;
                 } else {
                     System.out.println("No tienes tal item en tu inventario");
