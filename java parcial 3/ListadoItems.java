@@ -151,6 +151,8 @@ public class ListadoItems {
                                 new String[] { "radiacion" }, 0));
                 añadirItem(new Item("manzana", 1, 0.2, "alimento liviano para el camino",
                                 new String[] { "alimentacion" }, 0));
+                añadirItem(new Item("gaseosa", 1, 0.4, "alimento liviano para el camino",
+                                new String[] { "alimentacion" }, 0));
 
         }
 

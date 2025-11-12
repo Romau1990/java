@@ -239,10 +239,43 @@ public class Jugador {
         verMochila(false);
     }
 
-    // Lootear ✅
+    // Generar loot -> solo crea la lógica pero se ejecuta en lootear ✅
+    // ===========================================================================================
+
+    static void generarLoot() {
+
+    }
+
+    // lootear ✅
     // ===========================================================================================
 
     static void lootear() {
+
+        // metodo de testeo
+        int isLocked = (int) (Math.random() * 10);
+        ObjItem lockPick = null;
+
+        for (ObjItem item : Jugador.mochila) {
+            if (Arrays.asList(item.getProposito()).contains("abrir")) {
+                lockPick = item;
+            }
+        }
+
+        if (isLocked > 7 && lockPick == null) {
+            System.out.println("Esta cerrado con llave... necesito una garzúa");
+            return;
+        } else if (isLocked > 7 && lockPick != null) {
+            var unlockAttempt = Math.random() * 10;
+            if (unlockAttempt < 5) {
+                System.out.println("la garzúa se ha roto");
+                lockPick.cantidad--;
+                return;
+            } else {
+                Jugador.generarLoot();
+            }
+        } else {
+            Jugador.generarLoot();
+        }
 
         ObjItem itemObtenido = ListadoItems.randomItem();
         double itemPeso = itemObtenido.getPeso();
@@ -294,6 +327,7 @@ public class Jugador {
             System.out.println(Juego.BLANCO + "Has conseguido " + "$" + cantidadDinero);
             Jugador.dinero += cantidadDinero;
         }
+
     }
 
     // Ver mapa ✅
