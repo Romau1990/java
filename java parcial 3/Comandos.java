@@ -14,4 +14,19 @@ public class Comandos {
         System.out.println("equipar [item] -> preparar un arma especifica");
         System.out.println("=================================================================");
     }
+
+    static void infoMenu(String nombreJugador) {
+        System.out.println(Juego.CYAN +
+                "=== MENU ============================================================================================================================= ");
+        System.out.println("turno: " + Jugador.getTurno() + " ----------" + " nombre: " + nombreJugador
+                + " ----------" + " dinero: " + Jugador.dinero + " ---------- " + "vida: " + Jugador.vida
+                + " ---------- " + "area: " + Jugador.areaActual);
+        System.out.println("Estacion: " + Area.estacion + " ---------- " + "Clima: " + Area.clima
+                + " ---------- " + "temperatura: " + Area.temperatura + " ---------- " + Jugador.pesoTotalItems
+                + "/" + Jugador.pesoMaximo);
+        System.out.print("Ver comandos -> comandos ----------");
+        System.out.println("salir del juego-> salir |");
+        System.out.println(
+                "====================================================================================================================================");
+    }
 }

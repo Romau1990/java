@@ -99,18 +99,7 @@ public class Juego {
                 }
                 // opciones estaticas de menu (se mostrarán siempre como ayuda memoria para el
                 // jugador ===========================================================
-                System.out.println(Juego.CYAN +
-                        "=== MENU ============================================================================================================================= ");
-                System.out.println("turno: " + Jugador.getTurno() + " ----------" + " nombre: " + nombreJugador
-                        + " ----------" + " dinero: " + Jugador.dinero + " ---------- " + "vida: " + Jugador.vida
-                        + " ---------- " + "area: " + Jugador.areaActual);
-                System.out.println("Estacion: " + Area.estacion + " ---------- " + "Clima: " + Area.clima
-                        + " ---------- " + "temperatura: " + Area.temperatura + " ---------- " + Jugador.pesoTotalItems
-                        + "/" + Jugador.pesoMaximo);
-                System.out.print("Ver comandos -> comandos ----------");
-                System.out.println("salir del juego-> salir |");
-                System.out.println(
-                        "====================================================================================================================================");
+                Comandos.infoMenu(nombreJugador);
 
                 // en accion tomada, además de salir iniciar podría usar esta instancia
                 // paradescansar, curarme, etc.
@@ -128,7 +117,11 @@ public class Juego {
                 // Acciones del jugador
                 switch (comando) {
                     case "equipar":
-                        Jugador.equipar(parametro);
+                        Jugador.equipar();
+                        break;
+
+                    case "equipamiento": 
+                        Jugador.equipoUsado();
                         break;
 
                     case "mapa":
@@ -220,7 +213,6 @@ public class Juego {
                         } else {
                             System.out.println(Juego.ROJO + "no tienes nada en la mochila");
                         }
-
                         break;
 
                     case "comandos":
@@ -249,6 +241,10 @@ public class Juego {
 
                     case "vestir":
                         Jugador.vestir();
+                        break;
+
+                    case "quitar":
+                        Jugador.quitarVestimenta();
                         break;
 
                     default:

@@ -26,6 +26,10 @@ public class Area {
         Area.estacion = estacionRandom;
     }
 
+    static String[] getAreas(){
+        return Area.ListaAreas;
+    }
+
     static void rollearTemp() {
         switch (Area.estacion) {
             case "Primavera":
@@ -112,6 +116,7 @@ public class Area {
 
             case "caverna":
                 // se incrementa turno en el area porque cada area cuesta x cantidad de turnos
+
                 break;
 
             case "campo":

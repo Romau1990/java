@@ -103,7 +103,7 @@ public class ListadoItems {
                 añadirArma(new Arma("Sarten", 1, 2, 5, 3, 200, "Sartén de hierro, ideal para golpear cabezas.",
                                 "impacto",
                                 new String[] { "arma", "cocina", "recipiente" }, 1));
-                añadirArma(new Arma("Pistola 9mm y balas", 4, 8, 14, 2, 90, "Pistola semiautomática con munición.",
+                añadirArma(new Arma("Pistola 9mm", 4, 8, 14, 2, 90, "Pistola semiautomática con munición.",
                                 "perforante",
                                 new String[] { "arma", "caceria" }, 1));
                 añadirArma(new Arma("Llave de tuercas", 1, 3, 7, 3, 130, "Herramienta de metal resistente.", "impacto",
@@ -152,7 +152,7 @@ public class ListadoItems {
                 añadirItem(new Item("manzana", 1, 0.2, "alimento liviano para el camino",
                                 new String[] { "alimentacion" }, 0));
                 añadirItem(new Item("gaseosa", 1, 0.4, "alimento liviano para el camino",
-                                new String[] { "alimentacion" }, 0));
+                                new String[] { "hidratacion" }, 0));
 
         }
 
