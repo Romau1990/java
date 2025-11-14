@@ -118,7 +118,7 @@ public class ListadoItems {
 
                 // === ITEMS ===
                 añadirItem(new Item("Vendaje", 1, 0.1, "Sirve para detener hemorragias leves.",
-                                new String[] { "curar" }, 1));
+                                new String[] { "curar", "vendaje superior" }, 1));
                 añadirItem(new Item("Carne cruda", 0, 0.5, "Carne sin cocinar, puede enfermarte.",
                                 new String[] { "alimentacion" }, 3));
                 añadirItem(new Item("Botella de agua", 1, 0.4, "Agua limpia para hidratarte.",
@@ -145,14 +145,16 @@ public class ListadoItems {
                                 new String[] { "alimentacion", "recipiente" }, 2));
                 añadirItem(new Item("agua sucia", 0, 0.4, "Alimento no muy sabroso pero quita el hambre",
                                 new String[] { "hidratacion", "recipiente" }, 2));
-                añadirItem(new Item("Traje antiradiacion", 2, 2, "traje contra radiacion.",
-                                new String[] { "equipo", "radiacion" }, 1));
+                añadirItem(new Item("Traje antirradiacion", 2, 2, "traje contra radiacion.",
+                                new String[] { "equipo", "antiradiacion" }, 1));
                 añadirItem(new Item("pildoras antiradiacion", 1, 0.1, "pildoras para curar la radiacion",
                                 new String[] { "radiacion" }, 0));
                 añadirItem(new Item("manzana", 1, 0.2, "alimento liviano para el camino",
                                 new String[] { "alimentacion" }, 0));
                 añadirItem(new Item("gaseosa", 1, 0.4, "alimento liviano para el camino",
                                 new String[] { "hidratacion" }, 0));
+                                añadirItem(new Item("desinfectante", 1, 0.4, "alimento liviano para el camino",
+                                new String[] { "antibiotico", "vendaje superior" }, 0));
 
         }
 

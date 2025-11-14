@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 public class Estado {
     // cada uno de estos se aplica en base a cuantos puntos le queda al jugador.
     static int infectionCount = 0;
@@ -143,7 +146,10 @@ public class Estado {
     // ----------------------------------------------------------------------------------------
 
     static public void radiacion() {
-        if (Jugador.radiacion == false) {
+
+        boolean tieneEquipo = Jugador.mochila.stream().anyMatch(item -> Arrays.asList(item.getProposito()).contains("antiradiacion"));
+
+        if (Jugador.radiacion == false && tieneEquipo == false) {
             Jugador.radiacion = true;
             Jugador.estado = "irradiado";
             System.out.println(Juego.ROJO + "Te encuentras irradiado, busca pildoras contra la radiacion urgentemente");

@@ -348,9 +348,17 @@ public class Jugador {
     // Crear
     // ===========================================================================================
 
-    static void crear() {
-        System.out.println("acabas de crear un item");
-    }
+    // static void combinar() {
+    // Scanner scan = new Scanner(System.in);
+
+    // int count = 0;
+    // System.out.println("que item quieres combinar");
+    // for(int i = 0; i < Jugador.mochila.size(); i++){
+
+    // }
+    // String eleccion = scan.nextLine();
+
+    // }
 
     // Viajar ✅
     // ===========================================================================================
@@ -385,6 +393,9 @@ public class Jugador {
 
         Jugador.mochila.forEach(item -> {
             if (itemElegido.trim().equalsIgnoreCase(item.getNombre())) {
+                if (Arrays.asList(Jugador.equipo).contains(itemElegido)) {
+                    Jugador.equipo = null;
+                }
                 item.cantidad--;
                 Jugador.pesoTotalItems -= item.getPeso();
             } else if (Jugador.pesoTotalItems < 0) {
@@ -421,47 +432,82 @@ public class Jugador {
     // ===========================================================================================
 
     static void curar() {
+
         Scanner choice = new Scanner(System.in);
+
+        // filtro todos los items relacionados con medicina
         List<ObjItem> filtered = Jugador.mochila.stream()
-                .filter(arr -> Arrays.asList(arr.getProposito()).contains("antibiotico") ||
-                        Arrays.asList(arr.getProposito()).contains("curar"))
+                .filter(arr -> Arrays.asList(arr.getProposito()).contains("antibiotico")
+                        || Arrays.asList(arr.getProposito()).contains("curar")
+                        || Arrays.asList(arr.getProposito()).contains("radiacion"))
                 .toList();
 
+        // si mi mocihla no tiene items relacionados
         if (filtered.isEmpty()) {
             System.out.println(Juego.ROJO + "No tienes items para curar en tu mochila");
             return;
         }
 
+        // Muestro los items y hago elegir al jugador
         System.out.println(Juego.BLANCO + "Cual item usaras?");
-
         filtered.forEach(item -> {
             System.out.println(item.nombre + " x" + item.cantidad + " " + item.descripcion);
         });
+        String decision = choice.nextLine();
 
-        String selectedItem = choice.nextLine();
+        // chequeamos el uso que le vamos a dar al item
+        String itemProposito = "";
+        ObjItem itemElegido = null;
 
-
-        Jugador.mochila.forEach(item -> {
-            if (item.getNombre().equalsIgnoreCase(selectedItem.trim())
-                    && Arrays.asList(item.getProposito()).contains("curar")) {
-                System.out.println(Juego.VERDE + "has recuperado +10 de vida");
-                Jugador.incrementarTurno(item.cantidadTurnos);
-                Jugador.vida += 10;
-                item.cantidad--;
-                calcularPeso(item);
+        for (ObjItem item : filtered) {
+            if (item.getNombre().trim().equalsIgnoreCase(decision)) {
+                itemProposito = item.getProposito()[0];
+                itemElegido = item;
             }
+        }
 
-            else if (item.getNombre().equalsIgnoreCase(selectedItem.trim())
-                    && Arrays.asList(item.getProposito()).contains("antibiotico")
-                    && Jugador.estado.equalsIgnoreCase("Infectado")) {
-                System.out.println(Juego.VERDE + "Has curado la infeccion");
-                Jugador.estado = "sano";
-                item.cantidad--;
-                calcularPeso(item);
-            }
+        // Nos aseguramos de que el item exista en nuestra mochila
+        if (itemProposito.isEmpty() || itemElegido == null) {
+            System.out.println("El item no existe");
+            return;
+        }
 
-        });
+        // manejador de propositos
+        switch (itemProposito) {
+            case "curar":
+                int vidaCurada = 20 * itemElegido.getNivel();
+                Jugador.vida = Math.min(Jugador.vida + vidaCurada, 100);
+                System.out.println("Has recuperado " + vidaCurada + " de vida");
+                break;
 
+            case "antibiotico":
+                if (Jugador.estado.equalsIgnoreCase("infectado")) {
+                    Jugador.estado = "sano";
+                    System.out.println(Juego.VERDE + "Ya no estas más infectado" + Juego.BLANCO);
+                } else {
+                    System.out.println("No estas infectado");
+                    return;
+                }
+                break;
+
+            case "radiacion":
+                if (Jugador.estado.equalsIgnoreCase("irradiado")) {
+                    Jugador.estado = "sano";
+                    System.out.println(Juego.VERDE + "Ya no estas más irradiado" + Juego.BLANCO);
+                } else {
+                    System.out.println("No estas irradiado");
+                    return;
+                }
+                break;
+
+        }
+        // reducimos cantidad en la mochila
+        itemElegido.cantidad--;
+        // reducimos el peso del item que ya no tenemos
+        calcularPeso(itemElegido);
+        // incrementamos el turno en 1
+        Jugador.incrementarTurno(1);
+        // si tenemos cantidad = 0 de un item en la mochila, lo quitamos de ella 
         descartar();
 
     }
@@ -469,24 +515,24 @@ public class Jugador {
     // equipo en uso
 
     static public void equipoUsado() {
-        System.out.println("================================= "+Jugador.nombre + " equipo =================================");
+        System.out.println(
+                "================================= " + Jugador.nombre + " equipo =================================");
         System.out.println("");
-        if(Jugador.equipo[0] != null){
-            System.out.println("Vestimenta-> " + Jugador.equipo[0].getNombre());   
-        }
-        else{
+        if (Jugador.equipo[0] != null) {
+            System.out.println("Vestimenta-> " + Jugador.equipo[0].getNombre());
+        } else {
             System.out.println("vestimenta-> vacío");
         }
 
-        if(Jugador.armaEquipada != null){
-            System.out.println("Arma-> " + Jugador.armaEquipada.getNombre());  
-        }
-        else{
+        if (Jugador.armaEquipada != null) {
+            System.out.println("Arma-> " + Jugador.armaEquipada.getNombre());
+        } else {
             System.out.println("arma-> vacío");
         }
         System.out.println("");
         System.out.println("");
-        System.out.println("==========================================================================================");
+        System.out
+                .println("==========================================================================================");
     }
 
     // Desinfectar ✅
@@ -617,7 +663,6 @@ public class Jugador {
                 .println(Juego.VERDE + "Descansaste " + hs + " hs. Energía actual: " + Jugador.energia + Juego.BLANCO);
     }
 
-
     // Equiparse
     // ===========================================================================================
 
@@ -646,11 +691,10 @@ public class Jugador {
         });
 
         eleccion = scan.nextLine();
-        
-        
+
         // si tienes armas
-        for(Arma arma: listaArmas){
-            if(arma.getNombre().trim().equalsIgnoreCase(eleccion)){
+        for (Arma arma : listaArmas) {
+            if (arma.getNombre().trim().equalsIgnoreCase(eleccion)) {
                 System.out.println("Te has equipado " + arma.getNombre());
                 armaElegida = arma;
                 Jugador.armaEquipada = armaElegida;
@@ -659,17 +703,28 @@ public class Jugador {
         }
 
         // si tienes armas pero no eliges
-        if(armaElegida == null){
+        if (armaElegida == null) {
             System.out.println("No has elegido ningun arma");
             return;
         }
 
     }
 
+     // Desequipar arma
+    // ===========================================================================================
+    static public void quitarArma() {
+        if (!Arrays.asList(Jugador.armaEquipada).isEmpty()) {
+            System.out.println("Te haz quitado tu arma principal");
+            Jugador.armaEquipada = null;
+        }
+    }
+
+
     // Desequipar vestimenta
     // ===========================================================================================
     static public void quitarVestimenta() {
         if (!Arrays.asList(Jugador.equipo).isEmpty()) {
+            System.out.println("Te haz quitado tu vestimenta");
             Jugador.equipo[0] = null;
         }
     }
